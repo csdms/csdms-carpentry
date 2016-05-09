@@ -27,11 +27,13 @@ We can load NumPy using:
 import numpy
 ~~~
 
-Importing a library is like getting a piece of lab equipment out of a
-storage locker and setting it up on the bench. Libraries provide
-additional functionality to Python, much like a new piece of equipment
-adds functionality to a lab space. Once we’ve loaded the library, we can
-use a tool inside that library to read the data file:
+Importing a library is like pulling a toolbox out of a
+storage locker and placing it on your workbench, making everything inside the toolbox accessible. Python has a set of built-in functions that are always available (the tools you always have available) and libraries provide
+additional functionality (the specialized tools in the toolbox you only sometimes need).
+
+
+Once we’ve loaded the library, we can
+call a function inside that library to read the data file:
 
 ~~~ {.python}
 numpy.loadtxt(fname='data/topo.asc', delimiter=',')
@@ -58,7 +60,7 @@ and the [delimiter](reference.html#delimiter) that separates values on a line.
 Both need to be character strings (or [strings](reference.html#string), for short)
 so we write them in quotes.
 
-Within the Jupyter iPython notebook, pressing Shift+Enter runs the
+Within the Jupyter (iPython) notebook, pressing Shift+Enter runs the
 commands in the selected cell. Because we haven't told iPython what to
 do with the output of `numpy.loadtxt`, the notebook just displays it on
 the screen. In this case, that output is the data we just loaded. By
@@ -71,14 +73,14 @@ A variable is just a name that refers to an object. Python’s variables
 must begin with a letter and are [case sensitive](reference.html#case-sensitive). We can assign a
 variable name to an object using `=`.
 
->## Naming objects {.callout}
+>## Objects and their names {.callout}
 >
 >What happens when a function is called but the output is not assigned to
 >a variable is a bit more complicated than simply not saving it. The call
 >to `numpy.loadtxt` read the file and created an object in memory that
 >contains the data, but because we didn't assign it to a variable name,
 >there is no way for us to call this object. While this difference might
->seem irrelevant (and, in practice, it is!), it will be important to
+>seem irrelevant (and, in practice, it probably is), it will be important to
 >consider how variable names are assigned to objects when we talk about
 >mutable and immutable objects later on.
 >
@@ -89,14 +91,12 @@ variable name to an object using `=`.
 
 Let’s re-run numpy.loadtxt and assign the output to a variable name:
 
-
 ~~~ {.python}
 topo = numpy.loadtxt('topo.asc', delimiter=',')
 ~~~
 
 This command doesn’t produce any visible output. If we want to see the
 data, we can print the variable’s value with the command `print`:
-
 
 ~~~ {.python}
 print topo
