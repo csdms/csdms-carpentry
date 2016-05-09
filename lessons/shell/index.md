@@ -48,6 +48,7 @@ These lessons will start you on a path towards using these resources effectively
 5.  [Loops](04-loop.html)
 6.  [Shell Scripts](05-script.html)
 7.  [Finding Things](06-find.html)
+8.  [Cluster Computing and PBS Commands](07-cluster-and-pbs.html)
 
 ## Other Resources
 

@@ -86,6 +86,16 @@ subtitle: Reference
 *   `man command` displays the manual page for a given command.
 *   `$(command)` inserts a command's output in place.
 
+## [Cluster Computing and PBS Commands](07-cluster-and-pbs.html)
+
+* A cluster computer is a supercomputer assembled from cheap, replaceable nodes linked by a fast network.
+* Work to be performed on a cluster -- a "job" -- is organized as a script, typically in bash or in Python.
+* Jobs are scheduled on the head node of a cluster, while work is performed on the compute nodes.
+* Portable Batch System (PBS) commands are used to submit and monitor jobs on a cluster.
+* `qstat` and `showq` show the status of jobs.
+* `qsub` submits a job to the queue.
+* `qdel` removes a job from the queue.
+
 ## Glossary
 
 absolute path
@@ -114,6 +124,8 @@ comment
     comments in SQL start with `--`,
     and other languages have other conventions.
 
+compute node
+:   A single computer in a cluster where computations are performed.
 
 current working directory
 :   The directory that [relative paths](#relative-path) are calculated from;
@@ -159,9 +171,19 @@ graphical user interface
     usually controlled by using a mouse.
     See also: [command-line interface](#command-line-interface).
 
+head node
+:   The entry point in a cluster computing system, where the job scheduler resides.
+
 home directory
 :   The default directory associated with an account on a computer system.
     By convention, all of a user's files are stored in or below her home directory.
+
+job
+:   A unit of work encapsulated in a script on a cluster computer.
+
+job queue
+:   An ordered list of [jobs](#job) assembled by the scheduling software on
+    a cluster computer.
 
 loop
 :   A set of instructions to be executed multiple times. Consists of a [loop body](#loop-body) and (usually) a
