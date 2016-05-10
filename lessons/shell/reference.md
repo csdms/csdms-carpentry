@@ -227,6 +227,9 @@ pipe
 :   A connection from the output of one program to the input of another.
     When two or more programs are connected in this way, they are called a "pipeline".
 
+Portable Batch System
+:   Software used to query and run batch programs on a cluster computer.
+
 process
 :   A running instance of a program, containing code, variable values,
     open files and network connections, and so on.
