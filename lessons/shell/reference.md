@@ -265,6 +265,9 @@ root directory
 :   The top-most directory in a [file system](#file-system).
     Its name is "/" on Unix (including Linux and Mac OS X) and "\\" on Microsoft Windows.
 
+scheduler
+:   Software that controls when and where a [job](#job) is run on a cluster.
+
 shell
 :   A [command-line interface](#cli) such as Bash (the Bourne-Again Shell)
     or the Microsoft Windows DOS shell
