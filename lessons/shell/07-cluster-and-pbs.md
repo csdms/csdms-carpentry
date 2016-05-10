@@ -53,8 +53,18 @@ a locally networked storage device.
 > Always use [PBS](reference.html#portable-batch-system) commands (below)
 > to perform computational work on a cluster.
 
-
-### Working on a cluster
+CSDMS maintains a cluster computer, ***beach***,
+an SGI Altix XE1300 with 88 Altix XE320 compute nodes.
+Each compute node is configured
+with two quad-core 3.0 GHz E5472 (Harpertown) processors,
+for a total of 704 cores.
+Twenty-six of the 88 nodes have 4 GB of memory per core,
+while the remainder have 2 GB of memory per core.
+The cluster is controlled through an Altix XE250 head node.
+Internode communication is accomplished through either gigabit ethernet
+or over a non-blocking InfiniBand fabric.
+Each compute node has 250 GB of local temporary storage.
+All nodes are able to access 36 TB of RAID storage through NFS.
 
 The typical way of working on a cluster
 is to submit a [job](reference.html#job)
@@ -89,22 +99,6 @@ on their respective `man` pages; e.g.,
 ~~~ {.bash}
 $ man qsub
 ~~~
-
-
-### Accessing the CSDMS cluster
-
-CSDMS maintains a cluster computer, ***beach***,
-an SGI Altix XE1300 with 88 Altix XE320 compute nodes.
-Each compute node is configured
-with two quad-core 3.0 GHz E5472 (Harpertown) processors,
-for a total of 704 cores.
-Twenty-six of the 88 nodes have 4 GB of memory per core,
-while the remainder have 2 GB of memory per core.
-The cluster is controlled through an Altix XE250 head node.
-Internode communication is accomplished through either gigabit ethernet
-or over a non-blocking InfiniBand fabric.
-Each compute node has 250 GB of local temporary storage.
-All nodes are able to access 36 TB of RAID storage through NFS.
 
 To access the CSDMS cluster,
 log into the head node of ***beach*** from your computer,
@@ -146,10 +140,8 @@ $ pwd
 > Once a VPN connection is established,
 > you can connect to ***beach*** as above.
 
-
-### Tranferring files
-
-We need to transfer the files in the **code-shell** directory
+Next,
+we need to transfer the files in the **code-shell** directory
 from your local computer to ***beach***.
 Open a new terminal window on your local computer,
 change to your **Desktop** directory,
@@ -165,22 +157,22 @@ code-shell  data-shell
 ~~~
 
 To transfer the files,
-the command we use is `scp` ("secure copy").
+we use the `scp` ("secure copy") command.
 In the terminal on your local computer, type:
 
 ~~~ {.bash}
 $ scp -r code-shell [username@]beach.colorado.edu:~
 ~~~
 
-where the `-r` flag tells `scp` to recursively copy
-the contents of the **code-shell** directory
-and the `~` at the end of the command
+Here, the `-r` flag tells `scp` to recursively copy
+the contents of the **code-shell** directory,
+while the `~` at the end of the command
 is the location to copy to on ***beach***,
 your home directory.
 Be sure to replace `[username]` with your ***beach*** user name.
 You'll be prompted for your ***beach*** password.
 
-In a terminal you've connected to ***beach***,
+In the terminal you've connected to ***beach***,
 change to your home directory
 and check that the files are present.
 
@@ -189,10 +181,7 @@ $ cd
 $ ls
 ~~~
 
-
-### Submitting a batch job
-
-On ***beach***,
+Next,
 change to the **code-shell** directory
 and list its contents:
 
@@ -292,8 +281,6 @@ including examples,
 can be [found](http://csdms.colorado.edu/wiki/HPCC_usage_rules)
 on the CSDMS web site.
 
-
-### Checking the status of batch jobs
 
 Check the all of the current jobs in all the queues on ***beach***
 with the `qstat` command:

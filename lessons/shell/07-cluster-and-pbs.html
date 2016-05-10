@@ -60,7 +60,7 @@
 <p>Heavy computational use may cause the head node to become unresponsive, limiting its availability to outside users and impeding job monitoring. Always use <a href="reference.html#portable-batch-system">PBS</a> commands (below) to perform computational work on a cluster.</p>
 </div>
 </aside>
-<h3 id="working-on-a-cluster">Working on a cluster</h3>
+<p>CSDMS maintains a cluster computer, <strong><em>beach</em></strong>, an SGI Altix XE1300 with 88 Altix XE320 compute nodes. Each compute node is configured with two quad-core 3.0 GHz E5472 (Harpertown) processors, for a total of 704 cores. Twenty-six of the 88 nodes have 4 GB of memory per core, while the remainder have 2 GB of memory per core. The cluster is controlled through an Altix XE250 head node. Internode communication is accomplished through either gigabit ethernet or over a non-blocking InfiniBand fabric. Each compute node has 250 GB of local temporary storage. All nodes are able to access 36 TB of RAID storage through NFS.</p>
 <p>The typical way of working on a cluster is to submit a <a href="reference.html#job">job</a> to the <a href="reference.html#scheduler">scheduler</a> that resides on the head node. A job is organized as a script, typically written in bash or in Python, that contains commands to perform tasks. If more than one job is scheduled, they’re assigned to a <a href="reference.html#job-queue">queue</a> by the scheduler. When adequate computing resources become available, a job is popped off of the queue and run. After the run completes, any output can be collected and transferred from the cluster to a user’s local computer.</p>
 <p>The CSDMS cluster uses the <a href="http://www.adaptivecomputing.com/products/open-source/torque/">TORQUE</a> job scheduler, which employs <a href="reference.html#Portable-Batch-System">PBS</a> commands to submit and monitor jobs on the cluster. Key PBS commands are:</p>
 <ul>
@@ -70,8 +70,6 @@
 </ul>
 <p>Detailed information on these commands can be found on their respective <code>man</code> pages; e.g.,</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">man</span> qsub</code></pre></div>
-<h3 id="accessing-the-csdms-cluster">Accessing the CSDMS cluster</h3>
-<p>CSDMS maintains a cluster computer, <strong><em>beach</em></strong>, an SGI Altix XE1300 with 88 Altix XE320 compute nodes. Each compute node is configured with two quad-core 3.0 GHz E5472 (Harpertown) processors, for a total of 704 cores. Twenty-six of the 88 nodes have 4 GB of memory per core, while the remainder have 2 GB of memory per core. The cluster is controlled through an Altix XE250 head node. Internode communication is accomplished through either gigabit ethernet or over a non-blocking InfiniBand fabric. Each compute node has 250 GB of local temporary storage. All nodes are able to access 36 TB of RAID storage through NFS.</p>
 <p>To access the CSDMS cluster, log into the head node of <strong><em>beach</em></strong> from your computer, using the <code>ssh</code> (“secure shell”) command:</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">ssh</span> [username@]beach.colorado.edu</code></pre></div>
 <p>Be sure to replace <code>[username]</code> with the user name assigned to you on <strong><em>beach</em></strong>. You’ll be prompted for your password on <strong><em>beach</em></strong>, which is your CU IdentiKey. A successful login will look something like this:</p>
@@ -91,19 +89,17 @@ $</code></pre>
 <p>To access <strong><em>beach</em></strong> from outside of the CU-Boulder campus, you’ll need to establish a Virtual Private Network (VPN) connection to the campus. The campus Office of Information Technology provides <a href="http://www.colorado.edu/oit/services/network-internet-services/vpn">instructions</a> for downloading and installing VPN software. Once a VPN connection is established, you can connect to <strong><em>beach</em></strong> as above.</p>
 </div>
 </aside>
-<h3 id="tranferring-files">Tranferring files</h3>
-<p>We need to transfer the files in the <strong>code-shell</strong> directory from your local computer to <strong><em>beach</em></strong>. Open a new terminal window on your local computer, change to your <strong>Desktop</strong> directory, and get a directory listing:</p>
+<p>Next, we need to transfer the files in the <strong>code-shell</strong> directory from your local computer to <strong><em>beach</em></strong>. Open a new terminal window on your local computer, change to your <strong>Desktop</strong> directory, and get a directory listing:</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">cd</span> ~/Desktop
 $ <span class="kw">ls</span></code></pre></div>
 <pre class="output"><code>code-shell  data-shell</code></pre>
-<p>To transfer the files, the command we use is <code>scp</code> (“secure copy”). In the terminal on your local computer, type:</p>
+<p>To transfer the files, we use the <code>scp</code> (“secure copy”) command. In the terminal on your local computer, type:</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">scp</span> -r code-shell [username@]beach.colorado.edu:~</code></pre></div>
-<p>where the <code>-r</code> flag tells <code>scp</code> to recursively copy the contents of the <strong>code-shell</strong> directory and the <code>~</code> at the end of the command is the location to copy to on <strong><em>beach</em></strong>, your home directory. Be sure to replace <code>[username]</code> with your <strong><em>beach</em></strong> user name. You’ll be prompted for your <strong><em>beach</em></strong> password.</p>
-<p>In a terminal you’ve connected to <strong><em>beach</em></strong>, change to your home directory and check that the files are present.</p>
+<p>Here, the <code>-r</code> flag tells <code>scp</code> to recursively copy the contents of the <strong>code-shell</strong> directory, while the <code>~</code> at the end of the command is the location to copy to on <strong><em>beach</em></strong>, your home directory. Be sure to replace <code>[username]</code> with your <strong><em>beach</em></strong> user name. You’ll be prompted for your <strong><em>beach</em></strong> password.</p>
+<p>In the terminal you’ve connected to <strong><em>beach</em></strong>, change to your home directory and check that the files are present.</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">cd</span>
 $ <span class="kw">ls</span></code></pre></div>
-<h3 id="submitting-a-batch-job">Submitting a batch job</h3>
-<p>On <strong><em>beach</em></strong>, change to the <strong>code-shell</strong> directory and list its contents:</p>
+<p>Next, change to the <strong>code-shell</strong> directory and list its contents:</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">cd</span> ~/code-shell
 $ <span class="kw">ls</span></code></pre></div>
 <pre class="output"><code>calculate_pi.pbs.sh  calculate_pi.py  simple.pbs.sh</code></pre>
@@ -116,7 +112,6 @@ $ <span class="kw">ls</span></code></pre></div>
 
 echo &quot;Hello world!&quot;</code></pre>
 <p>This script, when run, will print “Hello world!” to standard output.</p>
-<p><em>TODO: discuss queues.</em></p>
 <p>Cluster computers often have several queues with different properties, for example, a high-memory queue, a long run queue, a debugging queue, and a default queue. View the queues available on the CSDMS cluster with <code>qstat</code>:</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">qstat</span> -q</code></pre></div>
 <p>The <code>-q</code> flag prompts <code>qstat</code> to output only queue information.</p>
@@ -148,7 +143,6 @@ ocean              --      --    12:00:00   --    0   0 --   E R
 <p>Choosing a queue.</p>
 <p>Email notification.</p>
 <p>More information on submitting PBS jobs, including examples, can be <a href="http://csdms.colorado.edu/wiki/HPCC_usage_rules">found</a> on the CSDMS web site.</p>
-<h3 id="checking-the-status-of-batch-jobs">Checking the status of batch jobs</h3>
 <p>Check the all of the current jobs in all the queues on <strong><em>beach</em></strong> with the <code>qstat</code> command:</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">qstat</span></code></pre></div>
 <pre class="output"><code>Job ID                    Name             User            Time Use S Queue
