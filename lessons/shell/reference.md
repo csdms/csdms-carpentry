@@ -197,6 +197,9 @@ MIME type
 :   MIME (Multi-Purpose Internet Mail Extensions) types describe different file types for exchange on the Internet,
     for example images, audio, and documents.
 
+node
+:   An individual computer in a cluster.
+
 operating system
 :   Software that manages interactions between users, hardware, and software [processes](#process). Common
     examples are Linux, OS X, and Windows.
