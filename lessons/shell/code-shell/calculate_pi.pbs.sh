@@ -4,6 +4,7 @@
 #
 #  $ qsub calculate_pi.pbs.sh
 
+cd $PBS_O_WORKDIR
 echo "Calculating pi with the Bailey–Borwein–Plouffe formula"
 echo "Start time:" `date`
 python calculate_pi.py 20
