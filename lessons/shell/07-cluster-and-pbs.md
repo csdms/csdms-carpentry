@@ -53,6 +53,8 @@ a locally networked storage device.
 > Always use [PBS](reference.html#portable-batch-system) commands (below)
 > to perform computational work on a cluster.
 
+<!-- About the CSDMS cluster -->
+
 CSDMS maintains a cluster computer, ***beach***,
 an SGI Altix XE1300 with 88 Altix XE320 compute nodes.
 Each compute node is configured
@@ -65,6 +67,8 @@ Internode communication is accomplished through either gigabit ethernet
 or over a non-blocking InfiniBand fabric.
 Each compute node has 250 GB of local temporary storage.
 All nodes are able to access 36 TB of RAID storage through NFS.
+
+<!-- Working on a cluster -->
 
 The typical way of working on a cluster
 is to submit a [job](reference.html#job)
@@ -82,6 +86,8 @@ any output can be collected
 and transferred from the cluster
 to a user's local computer.
 
+<!-- PBS commands -->
+
 The CSDMS cluster uses the
 [TORQUE](http://www.adaptivecomputing.com/products/open-source/torque/)
 job scheduler,
@@ -89,8 +95,8 @@ which employs [PBS](reference.html#Portable-Batch-System) commands
 to submit and monitor jobs on the cluster.
 Key PBS commands are:
 
-* `qsub` to submit a job to the queue
 * `qstat` to show the status of a job
+* `qsub` to submit a job to the queue
 * `qdel` to remove a job from the queue
 
 Detailed information on these commands can be found
@@ -99,6 +105,8 @@ on their respective `man` pages; e.g.,
 ~~~ {.bash}
 $ man qsub
 ~~~
+
+<!-- Login to beach -->
 
 To access the CSDMS cluster,
 log into the head node of ***beach*** from your computer,
@@ -140,86 +148,46 @@ $ pwd
 > Once a VPN connection is established,
 > you can connect to ***beach*** as above.
 
-Next,
-we need to transfer the files in the **code-shell** directory
-from your local computer to ***beach***.
-Open a new terminal window on your local computer,
-change to your **Desktop** directory,
-and get a directory listing:
+<!-- Get info about queues on beach -->
+
+Now that we're logged into ***beach***,
+what's the current status of its job queue?
+
+Check the all of the jobs on ***beach***, both running and queued,
+with the `qstat` command:
 
 ~~~ {.bash}
-$ cd ~/Desktop
-$ ls
+$ qstat
 ~~~
 
 ~~~ {.output}
-code-shell  data-shell
+Job ID                    Name             User            Time Use S Queue
+------------------------- ---------------- --------------- -------- - -----
+195567.beach               WBMsed3.11       frdu8933        295:39:1 R himem
+195568.beach               WBMsed3.8        frdu8933        295:34:1 R himem
+195569.beach               WBMsed3.5        frdu8933               0 Q himem
+195570.beach               WBMsed3.2        frdu8933               0 Q himem
+195571.beach               WBMsed3.10       frdu8933               0 Q himem
+195578.beach               WBMsed3.3        frdu8933               0 Q himem
+195972.beach               dem              jimc5170        24:54:08 R default
+196667.beach               dem              jimc5170        45:57:19 R default
+196670.beach               dem              jimc5170        44:18:05 R default
+196673.beach               dem              jimc5170        44:31:45 R default
+...
 ~~~
 
-To transfer the files,
-we use the `scp` ("secure copy") command.
-In the terminal on your local computer, type:
-
-~~~ {.bash}
-$ scp -r code-shell [username@]beach.colorado.edu:~
-~~~
-
-Here, the `-r` flag tells `scp` to recursively copy
-the contents of the **code-shell** directory,
-while the `~` at the end of the command
-is the location to copy to on ***beach***,
-your home directory.
-Be sure to replace `[username]` with your ***beach*** user name.
-You'll be prompted for your ***beach*** password.
-
-In the terminal you've connected to ***beach***,
-change to your home directory
-and check that the files are present.
-
-~~~ {.bash}
-$ cd
-$ ls
-~~~
-
-Next,
-change to the **code-shell** directory
-and list its contents:
-
-~~~ {.bash}
-$ cd ~/code-shell
-$ ls
-~~~
-
-~~~ {.output}
-calculate_pi.pbs.sh  calculate_pi.py  simple.pbs.sh
-~~~
-
-The file `simple.pbs.sh` is an example of a PBS script.
-Dump the contents of this script to the terminal with `cat`:
-
-~~~ {.bash}
-$ cat simple.pbs.sh
-~~~
-
-~~~ {.output}
-#!/usr/bin/env bash
-# A simple PBS script. Submit this script to the queue manager with:
-#
-#  $ qsub simple.pbs.sh
-
-echo "Hello world!"
-~~~
-
-This script,
-when run,
-will print "Hello world!"
-to standard output.
+The output from `qstat` shows the job id, the job name, the job owner,
+how long the job has been running,
+the status of the job (`R` is running, `Q` is queued),
+and the queue in which the job has been slotted.
 
 Cluster computers often have several queues with different properties,
 for example, a high-memory queue, a long run queue,
-a debugging queue,
+a debug queue,
 and a default queue.
-View the queues available on the CSDMS cluster with `qstat`:
+When submitting a job to the scheduler,
+a user can choose an optimal queue for their job.
+View the available queues on the CSDMS cluster with `qstat`:
 
 ~~~ {.bash}
 $ qstat -q
@@ -249,66 +217,226 @@ ocean              --      --    12:00:00   --    0   0 --   E R
                                                 107  87
 ~~~
 
-Submit this script to the scheduler with `qsub`:
+<!-- Transfer files from local computer to beach -->
+
+To demonstrate how to submit and monitor a job on the CSDMS cluster,
+we'll use the examples from the **code-shell** directory.
+However,
+these files are on your local computer.
+We need to transfer the files
+from your computer to ***beach***.
+Start by opening a new terminal window on your computer,
+change to your **Desktop** directory,
+and get a directory listing:
 
 ~~~ {.bash}
-$ qsub -q debug simple.pbs.sh
+$ cd ~/Desktop
+$ ls
+~~~
+
+~~~ {.output}
+code-shell  data-shell
+~~~
+
+To transfer the **code-shell** directory,
+we use the `scp` ("secure copy") command.
+In the terminal on your local computer, type:
+
+~~~ {.bash}
+$ scp -r code-shell [username@]beach.colorado.edu:~
+~~~
+
+Here, the `-r` flag tells `scp` to recursively copy
+the contents of the **code-shell** directory,
+while the `~` at the end of the command
+is the location to copy to on ***beach***,
+your home directory.
+Be sure to replace `[username]` with your ***beach*** user name.
+You'll be prompted for your ***beach*** password.
+Your output should look approximately like this:
+
+~~~ {.output}
+calculate_pi.pbs.sh                                      100%  343     0.3KB/s   00:00
+calculate_pi.py                                          100%  608     0.6KB/s   00:00
+simple.pbs.sh                                            100%  136     0.1KB/s   00:00
+~~~
+
+In the terminal you've connected to ***beach***,
+change to your home directory
+and check that the files are present.
+
+~~~ {.bash}
+$ cd
+$ ls
+~~~
+
+~~~ {.output}
+code-shell
+~~~
+
+Next,
+change to the **code-shell** directory
+and list its contents:
+
+~~~ {.bash}
+$ cd ~/code-shell
+$ ls
+~~~
+
+~~~ {.output}
+calculate_pi.pbs.sh  calculate_pi.py  simple.pbs.sh
+~~~
+
+<!-- Submit a PBS script to the debug queue -->
+
+The file `calculate_pi.pbs.sh` is an example of a PBS script.
+Dump the contents of this script to the terminal with `cat`:
+
+~~~ {.bash}
+$ cat calculate_pi.pbs.sh
+~~~
+
+~~~ {.output}
+#!/usr/bin/env bash
+# A PBS script that calls a Python script that calculates an
+# approximation to pi. Submit this script to the queue manager with:
+#
+#  $ qsub calculate_pi.pbs.sh
+
+cd $PBS_O_WORKDIR
+echo "Calculating pi with the Bailey–Borwein–Plouffe formula"
+echo "Start time:" `date`
+python calculate_pi.py 20
+echo "End time:" `date`
+~~~
+
+Let's examine this script.
+The first several lines,
+prefaced with the `#` character,
+are comments,
+although the first line is important
+because it identifies the file as a bash script.
+`$PBS_O_WORKDIR` is a PBS environment variable
+that points to the current working directory.
+The `echo` command prints to standard output.
+The line beginning with `python`
+calls the Python script `calculate_pi.py`,
+telling it to calculate 20 successive approximations to &pi;.
+This script,
+when run,
+will print the approximations to &pi;
+to standard output.
+
+Submit this script to the debug queue with `qsub`:
+
+~~~ {.bash}
+$ qsub -q debug calculate_pi.pbs.sh
 ~~~
 
 The scheduler returns a job id:
 
 ~~~ {.output}
-197180.beach.colorado.edu
+197387.beach.colorado.edu
 ~~~
 
 Ordinarily,
-this job could be queried with `qstat`,
+a job can be queried with `qstat`,
 but this job runs really quickly.
 In fact,
 by the time you've read this,
-it will have completed.
+it will likely have completed.
 
+Let's look at the output.
+List the contents of the current directory:
 
+~~~ {.bash}
+$ ls
+~~~
 
-Interactive batch job.
+~~~ {.output}
+calculate_pi.pbs.sh          calculate_pi.pbs.sh.o197387  simple.pbs.sh
+calculate_pi.pbs.sh.e197387  calculate_pi.py
+~~~
 
-Choosing a queue.
+Note that new files,
+with extensions `e` (for error) and `o` (for output), plus the job id,
+have been created.
+Let's look at these files.
 
-Email notification.
+~~~ {.bash}
+$ cat calculate_pi.pbs.sh.e197387
+~~~
 
-More information on submitting PBS jobs,
+No errors, great!
+
+~~~ {.bash}
+$ cat calculate_pi.pbs.sh.o197387
+~~~
+
+~~~ {.output}
+Calculating pi with the Bailey–Borwein–Plouffe formula
+Start time: Wed May 11 10:35:57 MDT 2016
+1 3.133333333333333333333333333
+2 3.141422466422466422466422466
+3 3.141587390346581523052111287
+4 3.141592457567435381837004555
+5 3.141592645460336319557021222
+6 3.141592653228087534734378035
+7 3.141592653572880827785240761
+8 3.141592653588972704940777766
+9 3.141592653589752275236177867
+10 3.141592653589791146388776965
+11 3.141592653589793129614170563
+12 3.141592653589793232711292261
+13 3.141592653589793238154766322
+14 3.141592653589793238445977501
+15 3.141592653589793238461732481
+16 3.141592653589793238462593174
+17 3.141592653589793238462640594
+18 3.141592653589793238462643226
+19 3.141592653589793238462643373
+20 3.141592653589793238462643381
+End time: Wed May 11 10:35:57 MDT 2016
+~~~
+
+<!-- What would happen if we tried not 20, -->
+<!-- but 2,000,000 iterations of the BPP formula? -->
+<!-- It may take awhile. -->
+<!-- Let's try it. -->
+<!-- Use your editor to modify `calculate_pi.pbs.sh`: -->
+
+<!-- ~~~ {.bash} -->
+<!-- $ nano calculate_pi.pbs.sh -->
+<!-- ~~~ -->
+
+<!-- After editing, -->
+<!-- your file should look like: -->
+
+<!-- ~~~ {.output} -->
+<!-- #!/usr/bin/env bash -->
+<!-- # A PBS script that calls a Python script that calculates an -->
+<!-- # approximation to pi. Submit this script to the queue manager with: -->
+<!-- # -->
+<!-- #  $ qsub calculate_pi.pbs.sh -->
+
+<!-- cd $PBS_O_WORKDIR -->
+<!-- echo "Calculating pi with the Bailey–Borwein–Plouffe formula" -->
+<!-- echo "Start time:" `date` -->
+<!-- python calculate_pi.py 2000000 -->
+<!-- echo "End time:" `date` -->
+<!-- ~~~ -->
+
+More information on submitting and monitoring PBS jobs,
 including examples,
 can be [found](http://csdms.colorado.edu/wiki/HPCC_usage_rules)
 on the CSDMS web site.
 
-
-Check the all of the current jobs in all the queues on ***beach***
-with the `qstat` command:
-
-~~~ {.bash}
-$ qstat
-~~~
-
-~~~ {.output}
-Job ID                    Name             User            Time Use S Queue
-------------------------- ---------------- --------------- -------- - -----
-195567.beach               WBMsed3.11       frdu8933        295:39:1 R himem
-195568.beach               WBMsed3.8        frdu8933        295:34:1 R himem
-195569.beach               WBMsed3.5        frdu8933               0 Q himem
-195570.beach               WBMsed3.2        frdu8933               0 Q himem
-195571.beach               WBMsed3.10       frdu8933               0 Q himem
-195578.beach               WBMsed3.3        frdu8933               0 Q himem
-195972.beach               dem              jimc5170        24:54:08 R default
-196667.beach               dem              jimc5170        45:57:19 R default
-196670.beach               dem              jimc5170        44:18:05 R default
-196673.beach               dem              jimc5170        44:31:45 R default
-...
-~~~
-
-
-
-> ## Which compute nodes are being used? {.challenge}
+> ## Where is your job running? {.challenge}
 >
 > After you submit a PBS script to the scheduler,
-> can you use `qstat` to find what compute node(s)
+> can you use `qstat` to find which compute node(s) in the cluster
 > your job is running on?
+
+> ## Email notification {.challenge}
+>
+> Can you use flags to `qsub` to send an email when your job completes?
