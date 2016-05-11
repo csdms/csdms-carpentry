@@ -39,7 +39,7 @@
 </ul>
 </div>
 </section>
-<p>A cluster computer is a supercomputer constructed from individual cheap, replaceable computers, called <a href="reference.html#node">nodes</a>, that are linked by a fast network. Each node has its own operating system, usually a Linux variant. In a typical setup, one of the nodes in the cluster is configured as the <a href="reference.html#head-node">head node</a>, which acts as the controller for the cluster. The remainder of the nodes are configured as <a href="reference.html#compute-node">compute nodes</a>. They perform work in the cluster. Through the use of specially designed software, the nodes of a cluster act as a single computer.</p>
+<p>A cluster computer is a supercomputer constructed from individual cheap, replaceable computers (called <a href="reference.html#node">nodes</a>) that are linked by a fast network. Each node has its own operating system, usually a Linux variant. In a typical setup, one of the nodes in the cluster is configured as the <a href="reference.html#head-node">head node</a>, which acts as the controller for the cluster. The remainder of the nodes are configured as <a href="reference.html#compute-node">compute nodes</a>. Through the use of specially designed software, the nodes of a cluster act as a single computer.</p>
 <p>A typical cluster is diagrammed here:</p>
 <div class="figure">
 <img src="fig/Beowulf.png" alt="A typical cluster computer configuration. (Public domain image from https://en.wikipedia.org/wiki/File:Beowulf.png)" />
@@ -83,7 +83,7 @@
 ]
 
 $</code></pre>
-<p>where the command prompt is now on <strong><em>beach</em></strong>. Check that you’re in your home directory:</p>
+<p>The command promp is now interacting directly with <strong><em>beach</em></strong>. Check that you’re in your home directory:</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">pwd</span></code></pre></div>
 <aside class="callout panel panel-info">
 <div class="panel-heading">
@@ -94,8 +94,7 @@ $</code></pre>
 </div>
 </aside>
 <!-- Get info about queues on beach -->
-<p>Now that we’re logged into <strong><em>beach</em></strong>, what’s the current status of its job queue?</p>
-<p>Check the all of the jobs on <strong><em>beach</em></strong>, both running and queued, with the <code>qstat</code> command:</p>
+<p>We can check the jobs that are running or queued on <strong><em>beach</em></strong> with the <code>qstat</code> command:</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">qstat</span></code></pre></div>
 <pre class="output"><code>Job ID                    Name             User            Time Use S Queue
 ------------------------- ---------------- --------------- -------- - -----
@@ -134,21 +133,21 @@ ocean              --      --    12:00:00   --    0   0 --   E R
                                                ----- -----
                                                 107  87</code></pre>
 <!-- Transfer files from local computer to beach -->
-<p>To demonstrate how to submit and monitor a job on the CSDMS cluster, we’ll use the examples from the <strong>code-shell</strong> directory. However, these files are on your local computer. We need to transfer the files from your computer to <strong><em>beach</em></strong>. Start by opening a new terminal window on your computer, change to your <strong>Desktop</strong> directory, and get a directory listing:</p>
+<p>To demonstrate how to submit and monitor a job on the CSDMS cluster, we’ll use the examples from the <strong>code-shell</strong> directory. However, these files are on your local computer. We need to transfer the files from your computer to <strong><em>beach</em></strong>. Start by opening a new terminal window on your computer. This new command promp will be connected to your local computer, not <strong><em>beach</em></strong>! Change to your <strong>Desktop</strong> directory and get a directory listing:</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">cd</span> ~/Desktop
 $ <span class="kw">ls</span></code></pre></div>
 <pre class="output"><code>code-shell  data-shell</code></pre>
-<p>To transfer the <strong>code-shell</strong> directory, we use the <code>scp</code> (“secure copy”) command. In the terminal on your local computer, type:</p>
+<p>To transfer the <strong>code-shell</strong> directory to the server, we use the <code>scp</code> (“secure copy”) command. In the terminal on your local computer, type:</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">scp</span> -r code-shell [username@]beach.colorado.edu:~</code></pre></div>
 <p>Here, the <code>-r</code> flag tells <code>scp</code> to recursively copy the contents of the <strong>code-shell</strong> directory, while the <code>~</code> at the end of the command is the location to copy to on <strong><em>beach</em></strong>, your home directory. Be sure to replace <code>[username]</code> with your <strong><em>beach</em></strong> user name. You’ll be prompted for your <strong><em>beach</em></strong> password. Your output should look approximately like this:</p>
 <pre class="output"><code>calculate_pi.pbs.sh                                      100%  343     0.3KB/s   00:00
 calculate_pi.py                                          100%  608     0.6KB/s   00:00
 simple.pbs.sh                                            100%  136     0.1KB/s   00:00</code></pre>
-<p>In the terminal you’ve connected to <strong><em>beach</em></strong>, change to your home directory and check that the files are present.</p>
+<p>Switch back to the terminal you were using before, where you’ve connected to <strong><em>beach</em></strong>. Change to your home directory and check that the files are present:</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">cd</span>
 $ <span class="kw">ls</span></code></pre></div>
 <pre class="output"><code>code-shell</code></pre>
-<p>Next, change to the <strong>code-shell</strong> directory and list its contents:</p>
+<p>Next, move to the <strong>code-shell</strong> directory and list its contents:</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">cd</span> ~/code-shell
 $ <span class="kw">ls</span></code></pre></div>
 <pre class="output"><code>calculate_pi.pbs.sh  calculate_pi.py  simple.pbs.sh</code></pre>
@@ -231,7 +230,7 @@ End time: Wed May 11 10:35:57 MDT 2016</code></pre>
 <h2 id="where-is-your-job-running"><span class="glyphicon glyphicon-pencil"></span>Where is your job running?</h2>
 </div>
 <div class="panel-body">
-<p>After you submit a PBS script to the scheduler, can you use <code>qstat</code> to find which compute node(s) in the cluster your job is running on?</p>
+<p>After you submit a PBS script to the scheduler, you use <code>qstat</code> to find which compute node(s) in the cluster your job is running on. Look through the <code>qstat</code> <code>man</code> pages and test it out.</p>
 </div>
 </section>
 <section class="challenge panel panel-success">
@@ -239,7 +238,7 @@ End time: Wed May 11 10:35:57 MDT 2016</code></pre>
 <h2 id="email-notification"><span class="glyphicon glyphicon-pencil"></span>Email notification</h2>
 </div>
 <div class="panel-body">
-<p>Can you use flags to <code>qsub</code> to send an email when your job completes?</p>
+<p>What flags can you give <code>qsub</code> to send you an email when your job completes?</p>
 </div>
 </section>
         </div>

@@ -10,8 +10,8 @@ minutes: 25
 > * Be able to submit a job to a queue and check its status
 
 A cluster computer is a supercomputer
-constructed from individual cheap, replaceable computers,
-called [nodes](reference.html#node),
+constructed from individual cheap, replaceable computers
+(called [nodes](reference.html#node))
 that are linked by a fast network.
 Each node has its own operating system,
 usually a Linux variant.
@@ -21,7 +21,6 @@ is configured as the [head node](reference.html#head-node),
 which acts as the controller for the cluster.
 The remainder of the nodes
 are configured as [compute nodes](reference.html#compute-node).
-They perform work in the cluster.
 Through the use of specially designed software,
 the nodes of a cluster
 act as a single computer.
@@ -130,7 +129,7 @@ Last login: Mon May  9 13:17:19 2016 from solaria.colorado.edu
 
 $
 ~~~
-where the command prompt is now on ***beach***.
+The command promp is now interacting directly with ***beach***.
 Check that you're in your home directory:
 
 ~~~ {.bash}
@@ -150,10 +149,7 @@ $ pwd
 
 <!-- Get info about queues on beach -->
 
-Now that we're logged into ***beach***,
-what's the current status of its job queue?
-
-Check the all of the jobs on ***beach***, both running and queued,
+We can check the jobs that are running or queued on ***beach***
 with the `qstat` command:
 
 ~~~ {.bash}
@@ -225,8 +221,8 @@ However,
 these files are on your local computer.
 We need to transfer the files
 from your computer to ***beach***.
-Start by opening a new terminal window on your computer,
-change to your **Desktop** directory,
+Start by opening a new terminal window on your computer. This new command promp will be connected to your local computer, not ***beach***!
+Change to your **Desktop** directory
 and get a directory listing:
 
 ~~~ {.bash}
@@ -238,7 +234,7 @@ $ ls
 code-shell  data-shell
 ~~~
 
-To transfer the **code-shell** directory,
+To transfer the **code-shell** directory to the server,
 we use the `scp` ("secure copy") command.
 In the terminal on your local computer, type:
 
@@ -261,9 +257,9 @@ calculate_pi.py                                          100%  608     0.6KB/s  
 simple.pbs.sh                                            100%  136     0.1KB/s   00:00
 ~~~
 
-In the terminal you've connected to ***beach***,
-change to your home directory
-and check that the files are present.
+Switch back to the terminal you were using before, where you've connected to ***beach***.
+Change to your home directory
+and check that the files are present:
 
 ~~~ {.bash}
 $ cd
@@ -275,7 +271,7 @@ code-shell
 ~~~
 
 Next,
-change to the **code-shell** directory
+move to the **code-shell** directory
 and list its contents:
 
 ~~~ {.bash}
@@ -433,10 +429,9 @@ on the CSDMS web site.
 
 > ## Where is your job running? {.challenge}
 >
-> After you submit a PBS script to the scheduler,
-> can you use `qstat` to find which compute node(s) in the cluster
-> your job is running on?
+> After you submit a PBS script to the scheduler, you can use `qstat` to find which compute node(s) in the cluster
+> your job is running on. Look through the `qstat` `man` pages to find the command and test it out.
 
 > ## Email notification {.challenge}
 >
-> Can you use flags to `qsub` to send an email when your job completes?
+> What flags can you give `qsub` to send you an email when your job completes?

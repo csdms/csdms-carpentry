@@ -18,7 +18,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 # get_ipython().magic(u'matplotlib inline')
 
-topo = np.loadtxt('data/topo.asc', delimiter=',')
+import urllib
+
+url = "http://bit.ly/csdms_topo"
+raw_data = urllib.urlopen(url)
+
+topo = np.loadtxt(raw_data, delimiter=',')
 
 plt.plot(topo[0,:], hold=True, label='North')
 plt.plot(topo[-1,:], 'r--', label='South')
@@ -29,7 +34,7 @@ plt.ylabel('Elevation (m)')
 plt.xlabel('<-- West    East -->')
 plt.legend(loc = 'lower left')
 
-plt.savefig('data/profiles.png')
+plt.savefig('profiles.png')
 plt.show()
 
 # We can convert this code into a command-line Python script in two different ways:
