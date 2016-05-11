@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="generator" content="pandoc">
+    <title>Software Carpentry: The Unix Shell</title>
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap-theme.css" />
+    <link rel="stylesheet" type="text/css" href="css/swc.css" />
+    <link rel="alternate" type="application/rss+xml" title="Software Carpentry Blog" href="http://software-carpentry.org/feed.xml"/>
+    <meta charset="UTF-8" />
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body class="lesson">
+    <div class="container card">
+      <div class="banner">
+        <a href="http://software-carpentry.org" title="Software Carpentry">
+          <img alt="Software Carpentry banner" src="img/software-carpentry-banner.png" />
+        </a>
+      </div>
+      <article>
+      <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+                    <a href="index.html"><h1 class="title">The Unix Shell</h1></a>
+          <h2 class="subtitle">Cluster Computing and PBS Commands</h2>
+          <section class="objectives panel panel-warning">
+<div class="panel-heading">
+<h2 id="learning-objectives"><span class="glyphicon glyphicon-certificate"></span>Learning Objectives</h2>
+</div>
+<div class="panel-body">
+<ul>
+<li>Understand how a cluster differs from a desktop computer</li>
+<li>Be able to submit a job to a queue and check its status</li>
+</ul>
+</div>
+</section>
+<p>A cluster computer is a supercomputer constructed from individual cheap, replaceable computers, called <a href="reference.html#node">nodes</a>, that are linked by a fast network. Each node has its own operating system, usually a Linux variant. In a typical setup, one of the nodes in the cluster is configured as the <a href="reference.html#head-node">head node</a>, which acts as the controller for the cluster. The remainder of the nodes are configured as <a href="reference.html#compute-node">compute nodes</a>. They perform work in the cluster. Through the use of specially designed software, the nodes of a cluster act as a single computer.</p>
+<p>A typical cluster is diagrammed here:</p>
+<div class="figure">
+<img src="fig/Beowulf.png" alt="A typical cluster computer configuration. (Public domain image from https://en.wikipedia.org/wiki/File:Beowulf.png)" />
+<p class="caption">A typical cluster computer configuration. (Public domain image from https://en.wikipedia.org/wiki/File:Beowulf.png)</p>
+</div>
+<p>Note how the outside world can only communicate with the cluster through the server (i.e., the head node, in the terminology we’re using); the compute nodes are hidden. The head node is linked to the compute nodes through a local network. The head node and the compute nodes may also share a locally networked storage device.</p>
+<aside class="callout panel panel-info">
+<div class="panel-heading">
+<h2 id="head-node-use"><span class="glyphicon glyphicon-pushpin"></span>Head node use</h2>
+</div>
+<div class="panel-body">
+<p>The head node is only to be used for</p>
+<ul>
+<li>cluster access</li>
+<li>job scheduling</li>
+<li>communication with the compute nodes</li>
+</ul>
+<p>Heavy computational use may cause the head node to become unresponsive, limiting its availability to outside users and impeding job monitoring. Always use <a href="reference.html#portable-batch-system">PBS</a> commands (below) to perform computational work on a cluster.</p>
+</div>
+</aside>
+<!-- About the CSDMS cluster -->
+<p>CSDMS maintains a cluster computer, <strong><em>beach</em></strong>, an SGI Altix XE1300 with 88 Altix XE320 compute nodes. Each compute node is configured with two quad-core 3.0 GHz E5472 (Harpertown) processors, for a total of 704 cores. Twenty-six of the 88 nodes have 4 GB of memory per core, while the remainder have 2 GB of memory per core. The cluster is controlled through an Altix XE250 head node. Internode communication is accomplished through either gigabit ethernet or over a non-blocking InfiniBand fabric. Each compute node has 250 GB of local temporary storage. All nodes are able to access 36 TB of RAID storage through NFS.</p>
+<!-- Working on a cluster -->
+<p>The typical way of working on a cluster is to submit a <a href="reference.html#job">job</a> to the <a href="reference.html#scheduler">scheduler</a> that resides on the head node. A job is organized as a script, typically written in bash or in Python, that contains commands to perform tasks. If more than one job is scheduled, they’re assigned to a <a href="reference.html#job-queue">queue</a> by the scheduler. When adequate computing resources become available, a job is popped off of the queue and run. After the run completes, any output can be collected and transferred from the cluster to a user’s local computer.</p>
+<!-- PBS commands -->
+<p>The CSDMS cluster uses the <a href="http://www.adaptivecomputing.com/products/open-source/torque/">TORQUE</a> job scheduler, which employs <a href="reference.html#Portable-Batch-System">PBS</a> commands to submit and monitor jobs on the cluster. Key PBS commands are:</p>
+<ul>
+<li><code>qstat</code> to show the status of a job</li>
+<li><code>qsub</code> to submit a job to the queue</li>
+<li><code>qdel</code> to remove a job from the queue</li>
+</ul>
+<p>Detailed information on these commands can be found on their respective <code>man</code> pages; e.g.,</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">man</span> qsub</code></pre></div>
+<!-- Login to beach -->
+<p>To access the CSDMS cluster, log into the head node of <strong><em>beach</em></strong> from your computer, using the <code>ssh</code> (“secure shell”) command:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">ssh</span> [username@]beach.colorado.edu</code></pre></div>
+<p>Be sure to replace <code>[username]</code> with the user name assigned to you on <strong><em>beach</em></strong>. You’ll be prompted for your password on <strong><em>beach</em></strong>, which is your CU IdentiKey. A successful login will look something like this:</p>
+<pre class="output"><code>Last login: Mon May  9 13:17:19 2016 from solaria.colorado.edu
+]
+] For assistance please mail trouble@colorado.edu
+]
+
+$</code></pre>
+<p>where the command prompt is now on <strong><em>beach</em></strong>. Check that you’re in your home directory:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">pwd</span></code></pre></div>
+<aside class="callout panel panel-info">
+<div class="panel-heading">
+<h2 id="off-campus-access-to-the-csdms-cluster"><span class="glyphicon glyphicon-pushpin"></span>Off-campus access to the CSDMS cluster</h2>
+</div>
+<div class="panel-body">
+<p>To access <strong><em>beach</em></strong> from outside of the CU-Boulder campus, you’ll need to establish a Virtual Private Network (VPN) connection to the campus. The campus Office of Information Technology provides <a href="http://www.colorado.edu/oit/services/network-internet-services/vpn">instructions</a> for downloading and installing VPN software. Once a VPN connection is established, you can connect to <strong><em>beach</em></strong> as above.</p>
+</div>
+</aside>
+<!-- Get info about queues on beach -->
+<p>Now that we’re logged into <strong><em>beach</em></strong>, what’s the current status of its job queue?</p>
+<p>Check the all of the jobs on <strong><em>beach</em></strong>, both running and queued, with the <code>qstat</code> command:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">qstat</span></code></pre></div>
+<pre class="output"><code>Job ID                    Name             User            Time Use S Queue
+------------------------- ---------------- --------------- -------- - -----
+195567.beach               WBMsed3.11       frdu8933        295:39:1 R himem
+195568.beach               WBMsed3.8        frdu8933        295:34:1 R himem
+195569.beach               WBMsed3.5        frdu8933               0 Q himem
+195570.beach               WBMsed3.2        frdu8933               0 Q himem
+195571.beach               WBMsed3.10       frdu8933               0 Q himem
+195578.beach               WBMsed3.3        frdu8933               0 Q himem
+195972.beach               dem              jimc5170        24:54:08 R default
+196667.beach               dem              jimc5170        45:57:19 R default
+196670.beach               dem              jimc5170        44:18:05 R default
+196673.beach               dem              jimc5170        44:31:45 R default
+...</code></pre>
+<p>The output from <code>qstat</code> shows the job id, the job name, the job owner, how long the job has been running, the status of the job (<code>R</code> is running, <code>Q</code> is queued), and the queue in which the job has been slotted.</p>
+<p>Cluster computers often have several queues with different properties, for example, a high-memory queue, a long run queue, a debug queue, and a default queue. When submitting a job to the scheduler, a user can choose an optimal queue for their job. View the available queues on the CSDMS cluster with <code>qstat</code>:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">qstat</span> -q</code></pre></div>
+<p>The <code>-q</code> flag prompts <code>qstat</code> to output only queue information.</p>
+<pre class="output"><code>server: beach.colorado.edu
+
+Queue            Memory CPU Time Walltime Node  Run Que Lm  State
+---------------- ------ -------- -------- ----  --- --- --  -----
+ocean-owner        --      --       --      --    0   0 --   E R
+wrf-owner          --      --       --      --    0   0 --   E R
+ocean-special      --      --       --      --    0   0 --   E R
+route              --      --       --      --    0   0 --   E R
+total              --      --       --      --    0   0 --   E R
+wrf                --      --    12:00:00   --    0   0 --   E R
+default            --      --    96:00:00   --  105  77 --   E R
+himem              --      --       --      --    2  10 --   E R
+debug              --      --    02:00:00   --    0   0 --   E R
+long               --      --       --      --    0   0 12   E R
+wrf-special        --      --       --      --    0   0 --   E R
+vip                --      --    24:00:00   --    0   0 --   E R
+ocean              --      --    12:00:00   --    0   0 --   E R
+                                               ----- -----
+                                                107  87</code></pre>
+<!-- Transfer files from local computer to beach -->
+<p>To demonstrate how to submit and monitor a job on the CSDMS cluster, we’ll use the examples from the <strong>code-shell</strong> directory. However, these files are on your local computer. We need to transfer the files from your computer to <strong><em>beach</em></strong>. Start by opening a new terminal window on your computer, change to your <strong>Desktop</strong> directory, and get a directory listing:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">cd</span> ~/Desktop
+$ <span class="kw">ls</span></code></pre></div>
+<pre class="output"><code>code-shell  data-shell</code></pre>
+<p>To transfer the <strong>code-shell</strong> directory, we use the <code>scp</code> (“secure copy”) command. In the terminal on your local computer, type:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">scp</span> -r code-shell [username@]beach.colorado.edu:~</code></pre></div>
+<p>Here, the <code>-r</code> flag tells <code>scp</code> to recursively copy the contents of the <strong>code-shell</strong> directory, while the <code>~</code> at the end of the command is the location to copy to on <strong><em>beach</em></strong>, your home directory. Be sure to replace <code>[username]</code> with your <strong><em>beach</em></strong> user name. You’ll be prompted for your <strong><em>beach</em></strong> password. Your output should look approximately like this:</p>
+<pre class="output"><code>calculate_pi.pbs.sh                                      100%  343     0.3KB/s   00:00
+calculate_pi.py                                          100%  608     0.6KB/s   00:00
+simple.pbs.sh                                            100%  136     0.1KB/s   00:00</code></pre>
+<p>In the terminal you’ve connected to <strong><em>beach</em></strong>, change to your home directory and check that the files are present.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">cd</span>
+$ <span class="kw">ls</span></code></pre></div>
+<pre class="output"><code>code-shell</code></pre>
+<p>Next, change to the <strong>code-shell</strong> directory and list its contents:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">cd</span> ~/code-shell
+$ <span class="kw">ls</span></code></pre></div>
+<pre class="output"><code>calculate_pi.pbs.sh  calculate_pi.py  simple.pbs.sh</code></pre>
+<!-- Submit a PBS script to the debug queue -->
+<p>The file <code>calculate_pi.pbs.sh</code> is an example of a PBS script. Dump the contents of this script to the terminal with <code>cat</code>:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">cat</span> calculate_pi.pbs.sh</code></pre></div>
+<pre class="output"><code>#!/usr/bin/env bash
+# A PBS script that calls a Python script that calculates an
+# approximation to pi. Submit this script to the queue manager with:
+#
+#  $ qsub calculate_pi.pbs.sh
+
+cd $PBS_O_WORKDIR
+echo &quot;Calculating pi with the Bailey–Borwein–Plouffe formula&quot;
+echo &quot;Start time:&quot; `date`
+python calculate_pi.py 20
+echo &quot;End time:&quot; `date`</code></pre>
+<p>Let’s examine this script. The first several lines, prefaced with the <code>#</code> character, are comments, although the first line is important because it identifies the file as a bash script. <code>$PBS_O_WORKDIR</code> is a PBS environment variable that points to the current working directory. The <code>echo</code> command prints to standard output. The line beginning with <code>python</code> calls the Python script <code>calculate_pi.py</code>, telling it to calculate 20 successive approximations to π. This script, when run, will print the approximations to π to standard output.</p>
+<p>Submit this script to the debug queue with <code>qsub</code>:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">qsub</span> -q debug calculate_pi.pbs.sh</code></pre></div>
+<p>The scheduler returns a job id:</p>
+<pre class="output"><code>197387.beach.colorado.edu</code></pre>
+<p>Ordinarily, a job can be queried with <code>qstat</code>, but this job runs really quickly. In fact, by the time you’ve read this, it will likely have completed.</p>
+<p>Let’s look at the output. List the contents of the current directory:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">ls</span></code></pre></div>
+<pre class="output"><code>calculate_pi.pbs.sh          calculate_pi.pbs.sh.o197387  simple.pbs.sh
+calculate_pi.pbs.sh.e197387  calculate_pi.py</code></pre>
+<p>Note that new files, with extensions <code>e</code> (for error) and <code>o</code> (for output), plus the job id, have been created. Let’s look at these files.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">cat</span> calculate_pi.pbs.sh.e197387</code></pre></div>
+<p>No errors, great!</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">cat</span> calculate_pi.pbs.sh.o197387</code></pre></div>
+<pre class="output"><code>Calculating pi with the Bailey–Borwein–Plouffe formula
+Start time: Wed May 11 10:35:57 MDT 2016
+1 3.133333333333333333333333333
+2 3.141422466422466422466422466
+3 3.141587390346581523052111287
+4 3.141592457567435381837004555
+5 3.141592645460336319557021222
+6 3.141592653228087534734378035
+7 3.141592653572880827785240761
+8 3.141592653588972704940777766
+9 3.141592653589752275236177867
+10 3.141592653589791146388776965
+11 3.141592653589793129614170563
+12 3.141592653589793232711292261
+13 3.141592653589793238154766322
+14 3.141592653589793238445977501
+15 3.141592653589793238461732481
+16 3.141592653589793238462593174
+17 3.141592653589793238462640594
+18 3.141592653589793238462643226
+19 3.141592653589793238462643373
+20 3.141592653589793238462643381
+End time: Wed May 11 10:35:57 MDT 2016</code></pre>
+<!-- What would happen if we tried not 20, -->
+<!-- but 2,000,000 iterations of the BPP formula? -->
+<!-- It may take awhile. -->
+<!-- Let's try it. -->
+<!-- Use your editor to modify `calculate_pi.pbs.sh`: -->
+<!-- ~~~ {.bash} -->
+<!-- $ nano calculate_pi.pbs.sh -->
+<!-- ~~~ -->
+<!-- After editing, -->
+<!-- your file should look like: -->
+<!-- ~~~ {.output} -->
+<!-- #!/usr/bin/env bash -->
+<!-- # A PBS script that calls a Python script that calculates an -->
+<!-- # approximation to pi. Submit this script to the queue manager with: -->
+<!-- # -->
+<!-- #  $ qsub calculate_pi.pbs.sh -->
+<!-- cd $PBS_O_WORKDIR -->
+<!-- echo "Calculating pi with the Bailey–Borwein–Plouffe formula" -->
+<!-- echo "Start time:" `date` -->
+<!-- python calculate_pi.py 2000000 -->
+<!-- echo "End time:" `date` -->
+<!-- ~~~ -->
+<p>More information on submitting and monitoring PBS jobs, including examples, can be <a href="http://csdms.colorado.edu/wiki/HPCC_usage_rules">found</a> on the CSDMS web site.</p>
+<section class="challenge panel panel-success">
+<div class="panel-heading">
+<h2 id="where-is-your-job-running"><span class="glyphicon glyphicon-pencil"></span>Where is your job running?</h2>
+</div>
+<div class="panel-body">
+<p>After you submit a PBS script to the scheduler, can you use <code>qstat</code> to find which compute node(s) in the cluster your job is running on?</p>
+</div>
+</section>
+<section class="challenge panel panel-success">
+<div class="panel-heading">
+<h2 id="email-notification"><span class="glyphicon glyphicon-pencil"></span>Email notification</h2>
+</div>
+<div class="panel-body">
+<p>Can you use flags to <code>qsub</code> to send an email when your job completes?</p>
+</div>
+</section>
+        </div>
+      </div>
+      </article>
+      <div class="footer">
+        <a class="label swc-blue-bg" href="http://software-carpentry.org">Software Carpentry</a>
+        <a class="label swc-blue-bg" href="https://github.com/swcarpentry/shell-novice">Source</a>
+        <a class="label swc-blue-bg" href="mailto:admin@software-carpentry.org">Contact</a>
+        <a class="label swc-blue-bg" href="LICENSE.html">License</a>
+      </div>
+    </div>
+    <!-- Javascript placed at the end of the document so the pages load faster -->
+    <script src="http://software-carpentry.org/v5/js/jquery-1.9.1.min.js"></script>
+    <script src="css/bootstrap/bootstrap-js/bootstrap.js"></script>
+  </body>
+</html>
