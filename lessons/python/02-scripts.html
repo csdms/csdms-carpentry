@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="generator" content="pandoc">
+    <title>Software Carpentry: Programming with Python</title>
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap-theme.css" />
+    <link rel="stylesheet" type="text/css" href="css/swc.css" />
+    <meta charset="UTF-8" />
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body class="lesson">
+    <div class="container card">
+      <div class="banner">
+        <a href="http://csdms.colorado.edu" title="Community Surface Dynamics Modeling System">
+          <img alt="CSDMS banner" src="img/CSDMS_banner.png" />
+        </a>
+      </div>
+      <article>
+      <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+                    <a href="index.html"><h1 class="title">Programming with Python</h1></a>
+          <h2 class="subtitle">Writing stand-alone Python scripts</h2>
+          <section class="objectives panel panel-warning">
+<div class="panel-heading">
+<h2 id="learning-objectives"><span class="glyphicon glyphicon-certificate"></span>Learning Objectives</h2>
+</div>
+<div class="panel-body">
+<ul>
+<li>Create <code>.py</code> files from Jupyter notebooks</li>
+<li>Run Python scripts from the command line</li>
+<li>Understand the plotting memory buffer</li>
+<li>Save Matplotlib figures to file</li>
+</ul>
+</div>
+</section>
+<p>We started out using the Jupyter (iPython) notebooks in these lessons because they are a friendly environment to try out individual commands and write short scripts. The Jupyter notebooks, however, can only run inside their specific graphical environment. Stand-alone Python programs are text files with the extension <code>.py</code> that are run from the command line or within an IDE (Integrated Development Environment) such as Spyder. Your Python code has to be in <code>.py</code> files to run on an HPCC.</p>
+<p>The Jupyter notebooks are valuable in the early stages of your code development workflow, where you gradually build your program by tinkering with the code and exploring the data. However, you should quickly move your prototype code into stand-alone scripts that are platform independent and better suited for version control.</p>
+<p>Before we dive further into Python, we are going to convert the scripts we wrote in the first lesson into stand-alone Python scripts that can run from the command line. We will first run this script locally (in your own computer) before moving it to <code>beach.colorado.edu</code>, the CSDMS HPCC, and running it on a remote server with the commands you learned during the Bash lessons.</p>
+<p>Let’s look back at the script we wrote earlier that plots the West-to-East topographic profiles across our data. You should copy the code from the Jupyter notebook you were working in before to a new notebook to make sure nothing sneaks into the script:</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">import</span> numpy <span class="im">as</span> np
+<span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt
+<span class="op">%</span>matplotlib inline
+
+topo <span class="op">=</span> np.loadtxt(<span class="st">&#39;data/topo.asc&#39;</span>, delimiter<span class="op">=</span><span class="st">&#39;,&#39;</span>)
+
+plt.plot(topo[<span class="dv">0</span>,:], hold<span class="op">=</span><span class="va">True</span>, label<span class="op">=</span><span class="st">&#39;North&#39;</span>)
+
+plt.plot(topo[<span class="op">-</span><span class="dv">1</span>,:], <span class="st">&#39;r--&#39;</span>, label<span class="op">=</span><span class="st">&#39;South&#39;</span>)
+
+plt.plot(topo[<span class="bu">len</span>(topo)<span class="op">/</span><span class="dv">2</span>,:], <span class="st">&#39;g:&#39;</span>, linewidth<span class="op">=</span><span class="dv">3</span>, label<span class="op">=</span><span class="st">&#39;Mid&#39;</span>)
+
+plt.title(<span class="st">&#39;Topographic profiles&#39;</span>)
+plt.ylabel(<span class="st">&#39;Elevation (m)&#39;</span>)
+plt.xlabel(<span class="st">&#39;&lt;-- West    East --&gt;&#39;</span>)
+plt.legend(loc <span class="op">=</span> <span class="st">&#39;lower left&#39;</span>)
+
+plt.show()</code></pre></div>
+<div class="figure">
+<img src="fig/output_2_0.png" />
+
+</div>
+<p>We can convert this code into a command-line Python script in two different ways:</p>
+<ul>
+<li>Export the Jupyter notebook as a <code>.py</code> file [File -&gt; Download As -&gt; Python (.py)]</li>
+<li>Copy the script and paste it into a simple text file (using a text editor like TextWrangler or Notepad++) and save the file with a <code>.py</code> extension</li>
+</ul>
+<p>Go ahead and convert your Jupyter notebook into a <code>.py</code> file using whichever method is easier. Call your file <code>topo_profiler.py</code> and make sure that the file is in the same directory that contains the folder <code>data</code> where the file <code>topo.asc</code> is. Then open the file <code>topo_profiler.py</code> in your chosen text editor. Most code-friendly text editors will color the text in the file according to the language they are written in!</p>
+<p>If you exported the file through the Jupyter notebook menu, any Markdown (text) cells should be prefixed with a <code>#</code>. These are comments and the Python interpreter will not read them. You should also see some lines that look like this: <code># In[ ]:</code>. These are line numbers from the Jupyter notebook and are also commented out.</p>
+<p>Open a new Bash window and navigate (using <code>cd</code>, <code>ls</code> and <code>pwd</code>) to the directory that contains your <code>topo_profiler.py</code> file. To run the script from the command line, type:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">python</span> topo_profiler.py</code></pre></div>
+<p>Python read the contents of the text file <code>topo_profiler.py</code> and tried to run the script, but it produced an error:</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">Traceback (most recent call last):
+  File <span class="st">&quot;topo_profiler.py&quot;</span>, line <span class="dv">19</span>, <span class="op">in</span> <span class="op">&lt;</span>module<span class="op">&gt;</span>
+    get_ipython().magic(<span class="st">u&#39;matplotlib inline&#39;</span>)
+<span class="pp">NameError</span>: name <span class="st">&#39;get_ipython&#39;</span> <span class="op">is</span> <span class="op">not</span> defined</code></pre></div>
+<p>If you copied and pasted the code from the notebook to the text file instead of exporting it, it produced this error instead:</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">  File <span class="st">&quot;topo_profiler.py&quot;</span>, line <span class="dv">20</span>
+    <span class="op">%</span>matplotlib inline
+    <span class="op">^</span>
+<span class="pp">SyntaxError</span>: invalid syntax</code></pre></div>
+<p>The iPython magic command <code>%matplotlib inline</code> makes plots appear within the Jupyter notebook instead of in a separate window, but the regular Python interpreter doesn’t understand iPython magic commands. Go into the text file and comment out this line. In many text editors, the shortcut Command-/ (or Control-/) will comment out a line. You can also just add a # at the start of the line.</p>
+<p>Now run the script again. Python opened up a window that shows the figure we could see inside the notebook. There are some tools along the bottom of this window that you can use to navigate and save the figure.</p>
+<p>Notice that the Bash window doesn’t show a <code>$</code> before the text prompt while the figure window is open. This shows that Bash is “busy” and won’t respond until you close the figure (you can open a new Bash window if you need to run something while the figure is open). The Python code is also paused – it will wait until the figure is closed to continue past the <code>plt.show()</code> line!</p>
+<aside class="callout panel panel-info">
+<div class="panel-heading">
+<h2 id="deprecation-warnings"><span class="glyphicon glyphicon-pushpin"></span>Deprecation warnings</h2>
+</div>
+<div class="panel-body">
+<p>The Bash window might be showing a message like this:</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="dv">2016-05-09</span> <span class="dv">13</span>:<span class="dv">31</span>:<span class="fl">40.589</span> python[<span class="dv">15942</span>:<span class="dv">2318986</span>] setCanCycle: <span class="op">is</span> deprecated.  Please use setCollectionBehavior instead</code></pre></div>
+<p>A command that’s deprecated is one that you are discuraged from using because it’s been replaced by something else. The command still runs, though, but it might stop working in the future. If the deprecated command is i code, you should fix it so it stops warning you and doesn’t break later on. If it’s not in your own code, then ignore the warning and update your Python distribution soon.</p>
+</div>
+</aside>
+<p>Close the figure window. The Python script will continue running until it reaches the end and exits. You should now have the <code>$</code> prompt back in your Bash window. This means that you can run commands again.</p>
+<p>If you want your script to open multiple figure windows at the same time, you need to number your figures using <code>plt.figure()</code>. Let’s modify the script so it makes separate figures for each profile instead of a single one. We only need call <code>plt.show()</code> once, after all of the figures have been defined:</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">import</span> numpy <span class="im">as</span> np
+<span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt
+<span class="co"># get_ipython().magic(u&#39;matplotlib inline&#39;)</span>
+
+topo <span class="op">=</span> np.loadtxt(<span class="st">&#39;data/topo.asc&#39;</span>, delimiter<span class="op">=</span><span class="st">&#39;,&#39;</span>)
+
+plt.figure(<span class="dv">0</span>)
+plt.plot(topo[<span class="dv">0</span>,:], hold<span class="op">=</span><span class="va">True</span>, label<span class="op">=</span><span class="st">&#39;North&#39;</span>)
+
+plt.figure(<span class="dv">1</span>)
+plt.plot(topo[<span class="op">-</span><span class="dv">1</span>,:], <span class="st">&#39;r--&#39;</span>, label<span class="op">=</span><span class="st">&#39;South&#39;</span>)
+
+plt.figure(<span class="dv">2</span>)
+plt.plot(topo[<span class="bu">len</span>(topo)<span class="op">/</span><span class="dv">2</span>,:], <span class="st">&#39;g:&#39;</span>, linewidth<span class="op">=</span><span class="dv">3</span>, label<span class="op">=</span><span class="st">&#39;Mid&#39;</span>)
+
+plt.title(<span class="st">&#39;Topographic profiles&#39;</span>)
+plt.ylabel(<span class="st">&#39;Elevation (m)&#39;</span>)
+plt.xlabel(<span class="st">&#39;&lt;-- West    East --&gt;&#39;</span>)
+plt.legend(loc <span class="op">=</span> <span class="st">&#39;lower left&#39;</span>)
+
+plt.show()</code></pre></div>
+<div class="figure">
+<img src="fig/output_14_0.png" />
+
+</div>
+<div class="figure">
+<img src="fig/output_14_1.png" />
+
+</div>
+<div class="figure">
+<img src="fig/output_14_2.png" />
+
+</div>
+<p>Only figure 2 has a title, legend, and axis labels because they are defined only once, while figure 2 is active.</p>
+<p>Go back into the script and change it so it only produces one plot with all three profiles, as it did before. Run it again to check.</p>
+<p>For a short script running locally, we can easily use the buttons in the figure window to save our figure to a file. However, this is not practical if the script takes a long time to run or if we have to run multiple scripts in a row. It is also not always possible to interact (or even see!) the figure window when running code on a remote server. To save the figure automatically, we can replace <code>plt.show()</code> by the Matplotlib <code>savefig</code> function:</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="co">#plt.show()</span>
+plt.savefig(<span class="st">&#39;data/profiles.png&#39;</span>)</code></pre></div>
+<p>Instead of opening a figure window, your script will create a new file inside the <code>data</code> directory and run continuously to the end of the script.</p>
+<aside class="callout panel panel-info">
+<div class="panel-heading">
+<h2 id="plotting-memory-buffer"><span class="glyphicon glyphicon-pushpin"></span>Plotting memory buffer</h2>
+</div>
+<div class="panel-body">
+<p>You might want your script to save the figure and still show it as an interactive figure window. Every plotting command in our script adds data to a memory buffer. Waiting until all lines are plotted before showing the figure is more efficient than repeatedly redrawing the figure. The function <code>plt.close()</code> (or closing the interactive figure window) empties that buffer. If we want to save the figure, we need to include the <code>plt.savefig()</code> command before the memory buffer empties.</p>
+<p>If your script creates and saves multiple figures, it is often a good idea to include <code>plt.close()</code> after <code>plt.savefig()</code> to force the memory buffer to empty and let your script run faster.</p>
+</div>
+</aside>
+        </div>
+      </div>
+      </article>
+      <div class="footer">
+        <a class="label swc-blue-bg" href="http://csdms.colorado.edu">CSDMS</a>
+        <a class="label swc-blue-bg" href="https://github.com/mperignon/2016-05-16-csdms/">Source</a>
+        <a class="label swc-blue-bg" href="mailto:perignon@colorado.edu">Contact</a>
+        <a class="label swc-blue-bg" href="LICENSE.html">License</a>
+      </div>
+    </div>
+    <!-- Javascript placed at the end of the document so the pages load faster -->
+    <script src="http://software-carpentry.org/v5/js/jquery-1.9.1.min.js"></script>
+    <script src="css/bootstrap/bootstrap-js/bootstrap.js"></script>
+  </body>
+</html>

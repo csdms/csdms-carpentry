@@ -36,7 +36,7 @@ Once we’ve loaded the library, we can
 call a function inside that library to read the data file:
 
 ~~~ {.python}
-numpy.loadtxt(fname='data/topo.asc', delimiter=',')
+numpy.loadtxt('data/topo.asc', delimiter=',')
 ~~~
 ~~~ {.output}
 array([[ 3198.8391,  3198.123 ,  3197.1584, ...,  2583.3293, 
@@ -73,6 +73,7 @@ A variable is just a name that refers to an object. Python’s variables
 must begin with a letter and are [case sensitive](reference.html#case-sensitive). We can assign a
 variable name to an object using `=`.
 
+
 >## Objects and their names {.callout}
 >
 >What happens when a function is called but the output is not assigned to
@@ -85,14 +86,12 @@ variable name to an object using `=`.
 >mutable and immutable objects later on.
 >
 >A good explanation of how Python handles variables and objects can be
->found [in Jeff Knupp's blog].
->(https://jeffknupp.com/blog/2012/11/13/is-python-callbyvalue-or-
->callbyreference-neither/)
+> found [in Jeff Knupp's blog](https://jeffknupp.com/blog/2012/11/13/is-python-callbyvalue-or-callbyreference-neither/).
 
 Let’s re-run numpy.loadtxt and assign the output to a variable name:
 
 ~~~ {.python}
-topo = numpy.loadtxt('topo.asc', delimiter=',')
+topo = numpy.loadtxt('data/topo.asc', delimiter=',')
 ~~~
 
 This command doesn’t produce any visible output. If we want to see the
@@ -177,14 +176,13 @@ libraries because they have the same part-and-whole relationship.
 >sequence (a numpy array, a list, etc.). Because it is a built-in
 >function, it is always available for the Python interpreter and doesn't
 >have to be imported. The function `type()` is another built in function.
->You can read about them in the [Python docs].
->(https://docs.python.org/2/library/functions.html)
+>You can read about them in the [Python docs](https://docs.python.org/2/library/functions.html).
 
 > ## Who's who in the memory {.callout}
 >
 > You can use the whos command at any time to see what variables you have
 > created and what modules you have loaded into the computers memory. As
-> this is an IPython command, it will only work if you are in an IPython
+> this is an IPython command, it will only work if you are in an iPython
 > terminal or the Jupyter Notebook.
 >
 > ~~~ {.python}
@@ -235,9 +233,8 @@ image:
 ~~~{.python}
 matplotlib.pyplot.imshow(topo)
 ~~~
-~~~{.output}
-![png](fig/output_24_1.png)
-~~~
+![](fig/output_24_1.png)
+
 
 ## Indexing
 
@@ -366,14 +363,13 @@ print topo[:len(topo)/2, len(topo)/2:]
 > * What's the elevation difference between the NE corner and the SE corner?
 > * What's the elevation at the center of the region shown in the array?
 
-
 > ## Slicing strings {.challenge}
 >  
 > Indexing and slicing behave the same way for any type of sequence,
 > including numpy arrays, lists, and strings. Create a new variable called
 > `text` and assign it the string "The quick brown fox jumped over the
-> lazy dog." (note capitalization and punctuation and include the quotes so Python recognizes it as a string).
-> Then use slicing and the `print` statement to create these sentences:
+> lazy dog." (note the capitalization and punctuation in each sentence, and include the quotes so Python recognizes it as a string).
+> Then use slicing and the `print` statement to create these frases:
 > 
 > * the lazy dog.
 > * The fox jumped over the dog
@@ -382,11 +378,51 @@ print topo[:len(topo)/2, len(topo)/2:]
 > ## Plotting smaller regions {.challenge}
 > 
 > Use the function `imshow` from `matplotlib.pyplot` to make one plot
-> showing the northern half of the region and another showing the southern
+> showing the northern half of the region and another plot showing the southern
 > half.
 > 
-> Next try making four separate plots showing each quarter of the region
+> Then try making four separate plots showing each quarter of the region
 > separately.
+
+> ## Non-square arrays {.challenge}
+>  
+> We've been using `len(topo)/2` as both the row and column indices of the
+> center point in the array `topo`. This doesn't work with an array that's
+> not square (has different height and width).
+> 
+> * Take a (small) slice of the array `topo` and assign it to a new
+> variable. Make this new array have a height longer than its width, and
+> make both the height and width even numbers (4 x 6 is a good size).
+> 
+> * Access the center point of your new array. Write the indices using
+> variables, not numbers (ie. don't write `t[2,3]`) (Hint: `topo.shape` gives the number of rows and columns in `topo`. The
+> function `len(topo)` returns the length of the longest axis. Instead of
+> using `len()`, assign the output of `shape` to a variable and use
+> indexing). Are you *really* pointing to the center of your array? How
+> far off are you?
+
+> ## Odd-sized arrays {.challenge}
+>  
+> Both the array `topo` and the one you created above have even numbers of
+> rows and columns. In that case, the output of `width/2` and `height/2` were both
+> whole numbers (and therefore valid indices). *Mysteriously*,
+> `len(topo)/2` would work as an index even if the array `topo` had odd
+> numbers of rows and columns. Let's test it out!
+> 
+> * Take a second slice of `topo` that is one row and column larger
+> than the one you made previously. Check its shape and print the value at
+> the center of the array using indices like `width/2` and `height/2`.
+> Does this work? *Should* this work?
+> 
+> * Compare the actual indices of the center point of this array and the
+> indices you would calculate by dividing its width and height by 2. Is
+> division in Python behaving like division in the real world? (Hint: If
+> an array has a width and height that are odd numbers, what should the
+> value of `width/2` be?).
+> 
+> * Test the behavior of division (using `/`) in Python by trying various
+> even and odd whole numbers and decimals as both the nominator and
+> denominator.
 
 > ## Integers and floats {.callout}
 >  
@@ -476,46 +512,6 @@ print topo[:len(topo)/2, len(topo)/2:]
 > ~~~ 
 >     
 
-> ## Non-square arrays {.challenge}
->  
-> We've been using `len(topo)/2` as both the row and column indices of the
-> center point in the array `topo`. This doesn't work with an array that's
-> not square (has different height and width).
-> 
-> * Take a (small) slice of the array `topo` and assign it to a new
-> variable. Make this new array have a height longer than its width, and
-> make both the height and width even numbers (4 x 6 is a good size).
-> 
-> * Access the center point of your new array. Write the indices using
-> variables, not numbers (ie. don't write `t[2,3]`) (Hint: `topo.shape` gives the number of rows and columns in `topo`. The
-> function `len(topo)` returns the length of the longest axis. Instead of
-> using `len()`, assign the output of `shape` to a variable and use
-> indexing). Are you *really* pointing to the center of your array? How
-> far off are you?
-
-> ## Odd-sized arrays {.challenge}
->  
-> Both the array `topo` and the one you created above have even numbers of
-> rows and columns. In that case, the output of `width/2` and `height/2` were both
-> whole numbers (and therefore valid indices). *Mysteriously*,
-> `len(topo)/2` would work as an index even if the array `topo` had odd
-> numbers of rows and columns. Let's test it out!
-> 
-> * Take a second slice of `topo` that is one row and column larger
-> than the one you made previously. Check its shape and print the value at
-> the center of the array using indices like `width/2` and `height/2`.
-> Does this work? *Should* this work?
-> 
-> * Compare the actual indices of the center point of this array and the
-> indices you would calculate by dividing its width and height by 2. Is
-> division in Python behaving like division in the real world? (Hint: If
-> an array has a width and height that are odd numbers, what should the
-> value of `width/2` be?).
-> 
-> * Test the behavior of division (using `/`) in Python by trying various
-> even and odd whole numbers and decimals as both the nominator and
-> denominator.
-
 ## Numerical operations on arrays
 
 We can perform basic mathematical operations on each individual element
@@ -553,10 +549,10 @@ Mean elevation: 3153.62166407 meters
 > ## Methods vs. attributes {.callout}
 > 
 > `mean` is a method that belongs to the array `topo`, i.e., it is a
-> function that belongs to `topo` just like the attribute `shape` does.
+> function `topo` can inherently call just because of its type.
 > When we call `topo.mean()`, we are asking `topo` to calculate its mean
 > value. Because it is a function, we need to include parenthesis in the
-> command. A call to `topo.shape` doesn't include parenthesis because
+> command. Because it is an `np.array`, `topo` also has an attribute called `shape`, but it doesn't include parenthesis because
 > attributes are objects, not functions.
 > 
 > Python will kindly tell us if we mix up the parentheses:
@@ -584,7 +580,6 @@ Mean elevation: 3153.62166407 meters
 > ~~~
 
 NumPy arrays have many other useful methods:
-
 
 ~~~{.python}
 print 'Highest elevation:', topo.max(), 'meters'
@@ -621,7 +616,6 @@ array. If we want to see how the mean elevation changes with longitude
 print topo.mean(axis=0) 
 ~~~
 
-
 To see how the mean elevation changes with latitude (N-S), we can use
 `axis=1`:
 
@@ -650,7 +644,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 %matplotlib inline
 
-topo = np.loadtxt('topo.asc', delimiter=',')
+topo = np.loadtxt('data/topo.asc', delimiter=',')
 
 plt.plot(topo[0,:])
 plt.title('Topographic profile, northern edge')
@@ -665,10 +659,9 @@ plt.xlabel('<-- West    East -->')
 plt.show() 
 ~~~
 
-~~~{.output}
-![png](output_74_0.png)
-![png](output_74_1.png)
-~~~
+![](fig/output_74_0.png)
+![](fig/output_74_1.png)
+
 
 > ## Scientists dislike typing {.callout}
 >
@@ -688,7 +681,7 @@ subsequent calls to `plt.plot` to use the same axes (until it reaches
 import numpy as np import matplotlib.pyplot as plt
 %matplotlib inline
 
-topo = np.loadtxt('topo.asc', delimiter=',')
+topo = np.loadtxt('data/topo.asc', delimiter=',')
 
 plt.plot(topo[0,:], hold=True, label='North')
 
@@ -704,9 +697,7 @@ plt.legend(loc = 'lower left')
 plt.show() 
 ~~~
 
-~~~{.output}
-![png](output_77_0.png)
-~~~
+![](fig/output_77_0.png)
 
 > ## Make your own plots {.challenge}
 >
@@ -745,7 +736,7 @@ plt.show()
 >import numpy as np import matplotlib.pyplot as plt
 >%matplotlib inline
 >
->topo = np.loadtxt('topo.asc', delimiter=',')
+>topo = np.loadtxt('data/topo.asc', delimiter=',')
 >
 >fig = plt.figure(figsize=(16.0, 3.0))
 >
@@ -771,10 +762,6 @@ plt.show()
 >
 >plt.show(fig) 
 >~~~
->
->~~~{.output}
->![png](output_80_0.png)
->~~~
 
 >## Subplots of DEMs {.challenge}
 > 
@@ -790,7 +777,4 @@ plt.show()
 >vmax = topo.max()
 >
 >plt.imshow(topo, vmin=vmin, vmax=vmax) 
->~~~
->~~~{.output}
->![png](output_82_1.png)
 >~~~
