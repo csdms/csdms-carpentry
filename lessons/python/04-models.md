@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Programming with Python
-subtitle: Writing numerical models
+subtitle: Writing Numerical Models with Python
 minutes: 30
 ---
 > ## Learning Objectives {.objectives}

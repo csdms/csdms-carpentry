@@ -15,10 +15,7 @@ We use Python in our lessons because:
 3.  it has a large (and growing) user base among scientists; and
 4.  experience shows that it's easier for novices to learn than most other languages.
 
-We are using NCDC climate records and USGS streamgage data as examples in this set of lessons. Some of these data sets are stored in [comma-separated values](reference.html#comma-separated-values) (CSV) format:
-each row holds information for a given time period,
-and the columns represent different measurements. These files are messy - they have headers and time formats that we have to deal before using the data. In later lessons, we will also write scripts that directly request data files from servers through the USGS web services. Automatically accessing data with scripts using APIs is one way to further automate our workflow.
-
+We are using topographic as examples in this set of lessons.
 > ## Prerequisites {.prereq}
 >
 > Learners need to understand the concepts of files and directories
@@ -31,27 +28,21 @@ and the columns represent different measurements. These files are messy - they h
 >
 > You need to download some files to follow this lesson:
 >
-> 1. Make a new folder in your Desktop called `python-lessons`.
-> 2. Download [python-novice-geo.zip](./python-novice-geo.zip) and move the file to this folder.
-> 3. If it's not unzipped yet, double-click on it to unzip it. You should end up with a new folder called `data`.
-> 4. Access this folder from the Unix shell with:
+> 1. Download [swc_python.zip](swc_python.zip) and move it to your Desktop
+> 2. If it's not unzipped yet, double-click on it to unzip it. You should end up with a new folder called `swc_python`.
+> 3. Access this folder from the Unix shell with:
 >
 > ~~~ {.input}
-> $ cd && cd Desktop/python-novice-geo/data
+> $ cd && cd Desktop/swc_python/data
 > ~~~
 
 ## Topics
 
-1.  [Analyzing Temperature Data](01-numpy.html)
-2.  [Storing Multiple Values in Lists](02-lists.html)
-2.  [Repeating Actions with Loops](03-loops.html)
-4.  [Using Pandas with tabular data](04-pandas.html)
-5.  [Automating with Web Services](05-WebServices.html)
-6.  [Creating Functions](06-functions.html)
-7.  [Errors and Exceptions](07-errors.html)
-8.  [Defensive Programming](08-defensive.html)
-9.  [Debugging](09-debugging.html)
-10.  [Command-Line Programs](10-cmdline.html)
+1.  [Analyzing Topographic Data](01-numpy.html)
+2.  [Writing stand-alone Python scripts](02-scripts.html)
+3.  [Storing Multiple Values in Lists](03-lists.html)
+4.  [Writing Numerical Models with Python](04-models.html)
+5.  [Creating Functions](05-func.html)
 
 
 ## Other Resources

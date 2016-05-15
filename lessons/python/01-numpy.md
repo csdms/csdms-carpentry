@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Programming with Python
-subtitle: Analyzing Topographic data
+subtitle: Analyzing Topographic Data
 minutes: 30
 ---
 > ## Learning Objectives {.objectives}

@@ -34,15 +34,7 @@
 <li>it has a large (and growing) user base among scientists; and</li>
 <li>experience shows that it’s easier for novices to learn than most other languages.</li>
 </ol>
-<p>We are using NCDC climate records and USGS streamgage data as examples in this set of lessons. Some of these data sets are stored in <a href="reference.html#comma-separated-values">comma-separated values</a> (CSV) format: each row holds information for a given time period, and the columns represent different measurements. These files are messy - they have headers and time formats that we have to deal before using the data. In later lessons, we will also write scripts that directly request data files from servers through the USGS web services. Automatically accessing data with scripts using APIs is one way to further automate our workflow.</p>
-<section class="prereq panel panel-warning">
-<div class="panel-heading">
-<h2 id="prerequisites"><span class="glyphicon glyphicon-education"></span>Prerequisites</h2>
-</div>
-<div class="panel-body">
-<p>Learners need to understand the concepts of files and directories (including the working directory) and how to start a Python interpreter before tackling this lesson. This lesson references the Jupyter (IPython) Notebook, although it can be taught through any Python interpreter. The commands in this lesson pertain to <strong>Python 2.7</strong>.</p>
-</div>
-</section>
+<p>We are using topographic as examples in this set of lessons. &gt; ## Prerequisites {.prereq} &gt; &gt; Learners need to understand the concepts of files and directories &gt; (including the working directory) and how to start a Python &gt; interpreter before tackling this lesson. This lesson references the Jupyter (IPython) &gt; Notebook, although it can be taught through any Python interpreter. &gt; The commands in this lesson pertain to <strong>Python 2.7</strong>.</p>
 <section class="getready panel panel-warning">
 <div class="panel-heading">
 <h2 id="getting-ready"><span class="glyphicon glyphicon-check"></span>Getting ready</h2>
@@ -50,26 +42,20 @@
 <div class="panel-body">
 <p>You need to download some files to follow this lesson:</p>
 <ol style="list-style-type: decimal">
-<li>Make a new folder in your Desktop called <code>python-lessons</code>.</li>
-<li>Download <a href="./python-novice-geo.zip">python-novice-geo.zip</a> and move the file to this folder.</li>
-<li>If it’s not unzipped yet, double-click on it to unzip it. You should end up with a new folder called <code>data</code>.</li>
+<li>Download <a href="swc_python.zip" class="uri">swc_python.zip</a> and move it to your Desktop</li>
+<li>If it’s not unzipped yet, double-click on it to unzip it. You should end up with a new folder called <code>swc_python</code>.</li>
 <li>Access this folder from the Unix shell with:</li>
 </ol>
-<pre class="input"><code>$ cd &amp;&amp; cd Desktop/python-novice-geo/data</code></pre>
+<pre class="input"><code>$ cd &amp;&amp; cd Desktop/swc_python/data</code></pre>
 </div>
 </section>
 <h2 id="topics">Topics</h2>
 <ol style="list-style-type: decimal">
-<li><a href="01-numpy.html">Analyzing Temperature Data</a></li>
-<li><a href="02-lists.html">Storing Multiple Values in Lists</a></li>
-<li><a href="03-loops.html">Repeating Actions with Loops</a></li>
-<li><a href="04-pandas.html">Using Pandas with tabular data</a></li>
-<li><a href="05-WebServices.html">Automating with Web Services</a></li>
-<li><a href="06-functions.html">Creating Functions</a></li>
-<li><a href="07-errors.html">Errors and Exceptions</a></li>
-<li><a href="08-defensive.html">Defensive Programming</a></li>
-<li><a href="09-debugging.html">Debugging</a></li>
-<li><a href="10-cmdline.html">Command-Line Programs</a></li>
+<li><a href="01-numpy.html">Analyzing Topographic Data</a></li>
+<li><a href="02-scripts.html">Writing stand-alone Python scripts</a></li>
+<li><a href="03-lists.html">Storing Multiple Values in Lists</a></li>
+<li><a href="04-models.html">Writing Numerical Models with Python</a></li>
+<li><a href="05-func.html">Creating Functions</a></li>
 </ol>
 <h2 id="other-resources">Other Resources</h2>
 <ul>

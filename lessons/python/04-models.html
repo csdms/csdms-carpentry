@@ -26,7 +26,7 @@
       <div class="row">
         <div class="col-md-10 col-md-offset-1">
                     <a href="index.html"><h1 class="title">Programming with Python</h1></a>
-          <h2 class="subtitle">Writing numerical models</h2>
+          <h2 class="subtitle">Writing Numerical Models with Python</h2>
           <section class="objectives panel panel-warning">
 <div class="panel-heading">
 <h2 id="learning-objectives"><span class="glyphicon glyphicon-certificate"></span>Learning Objectives</h2>
@@ -41,22 +41,22 @@
 </div>
 </section>
 <p>Many members of our community focus on developing numerical models to study how landscapes evolve over time. The simplest and most commonly used transport law used to capture the evolution of hillslopes is a diffusion equation:</p>
-<p><br> <img src="fig/tex1.png" /></p>
+<p><br> <img src="fig/tex1.png" alt="" /></p>
 <p><br> where z is elevation, x is the horizontal distance, and K is a landscape diffusion coefficient.</p>
 <h2 id="finite-difference-methods">Finite difference methods</h2>
 <p>We can solve partial differential equations using finite difference methods by replacing the spatial and time derivatives with approximations that use the gridded data. xx is the index along an array of x positions and tt is the timestep.</p>
 <p>The time derivative can be approximated using a forward difference: <br></p>
 <div class="figure">
-<img src="fig/tex2.png" />
+<img src="fig/tex2.png" alt="" />
 
 </div>
 <p><br> The spatial second derivative can be approximated by combining a forward and a backwards difference: <br></p>
-<p><img src="fig/tex3.png" /> <br></p>
+<p><img src="fig/tex3.png" alt="" /> <br></p>
 <p>The diffusion equation can then be rewritten as: <br></p>
-<p><img src="fig/tex4.png" /> <br></p>
+<p><img src="fig/tex4.png" alt="" /> <br></p>
 <p>We can rearrange this equation to solve for the elevation z at position x at timestep t+1: <br></p>
 <div class="figure">
-<img src="fig/tex4.png" />
+<img src="fig/tex4.png" alt="" />
 
 </div>
 <h2 id="diffusion-in-1d">Diffusion in 1D</h2>
@@ -70,7 +70,7 @@ topo <span class="op">=</span> np.loadtxt(<span class="st">&#39;data/topo.asc&#3
 profile <span class="op">=</span> topo[:,<span class="dv">120</span>]
 
 plt.plot(profile, <span class="st">&#39;k*-&#39;</span>)</code></pre></div>
-<p><img src="fig/output_2_1.png" /> <br> This is the topography at time <span class="math inline"><em>t</em> = 0</span>. For every point in the array, the topography at time t = dt is going to be given by the equation above.</p>
+<p><img src="fig/output_2_1.png" alt="" /> <br> This is the topography at time <span class="math inline"><em>t</em> = 0</span>. For every point in the array, the topography at time t = dt is going to be given by the equation above.</p>
 <p>Let’s create a new NumPy array of the same shape as the profile where we can store the values of the new elevation values. The NumPy function <code>zeros_like()</code> creates an array of the same shape where every entry is zero:</p>
 <div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">newProfile <span class="op">=</span> np.zeros_like(profile)
 
@@ -196,7 +196,7 @@ after the loop, letter is c</code></pre>
     newProfile[i] <span class="op">=</span> profile[i] <span class="op">+</span> K <span class="op">*</span> dt <span class="op">*</span> (profile[i<span class="dv">+1</span>] <span class="op">-</span> <span class="dv">2</span> <span class="op">*</span> profile[i] <span class="op">+</span> profile[i<span class="dv">-1</span>]) <span class="op">/</span> dx<span class="op">**</span><span class="dv">2</span>
     
 plt.plot(profile <span class="op">-</span> newProfile)</code></pre></div>
-<p><img src="fig/output_27_1.png" /> <br> We can now put together a script that will evolve the profile by one timestep:</p>
+<p><img src="fig/output_27_1.png" alt="" /> <br> We can now put together a script that will evolve the profile by one timestep:</p>
 <div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">import</span> numpy <span class="im">as</span> np
 <span class="im">from</span> matplotlib <span class="im">import</span> pyplot <span class="im">as</span> plt
 <span class="op">%</span>matplotlib inline
@@ -279,7 +279,7 @@ plt.plot(profile, hold<span class="op">=</span><span class="va">True</span>)
     plt.ylim((<span class="dv">3450</span>,<span class="dv">3550</span>))
     </code></pre></div>
 <div class="figure">
-<img src="fig/output_34_0.png" />
+<img src="fig/output_34_0.png" alt="" />
 
 </div>
 <section class="challenge panel panel-success">
@@ -429,7 +429,7 @@ plt.plot(profile, hold<span class="op">=</span><span class="va">True</span>)
         plt.ylim((<span class="dv">3450</span>,<span class="dv">3550</span>))
     </code></pre></div>
 <div class="figure">
-<img src="fig/output_48_0.png" />
+<img src="fig/output_48_0.png" alt="" />
 
 </div>
 <section class="challenge panel panel-success">
@@ -451,9 +451,9 @@ elapsed <span class="op">=</span> time.time() <span class="op">-</span> t</code>
 <h2 id="diffusion-in-2d"><span class="glyphicon glyphicon-pencil"></span>Diffusion in 2D</h2>
 </div>
 <div class="panel-body">
-<p>The hillslope diffusion equation in 2D is: <br> <img src="fig/tex6.png" /> <br> Using finite difference methods, we can write an expression for the evolving topography:</p>
+<p>The hillslope diffusion equation in 2D is: <br> <img src="fig/tex6.png" alt="" /> <br> Using finite difference methods, we can write an expression for the evolving topography:</p>
 <p>We can rearrange this equation to solve for the elevation z at position xx,yy at timestep t+1: <br></p>
-<p><img src="fig/tex7.png" /> <br> Use this equation to model the evolution of the topo array.</p>
+<p><img src="fig/tex7.png" alt="" /> <br> Use this equation to model the evolution of the topo array.</p>
 </div>
 </section>
         </div>
