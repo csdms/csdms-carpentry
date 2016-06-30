@@ -26,7 +26,10 @@ We are using topographic as examples in this set of lessons.
 
 > ## Getting ready {.getready}
 >
-> You need to download some files to follow this lesson:
+> You need to have Python 2.7 installed on your computer. For instructions on how to
+> install this software, visit [the CSDMS workshop page](http://mperignon.github.io/2016-05-16-csdms).
+>
+> You also need to download some files to follow this lesson:
 >
 > 1. Download [swc_python.zip](swc_python.zip) and move it to your Desktop
 > 2. If it's not unzipped yet, double-click on it to unzip it. You should end up with a new folder called `swc_python`.

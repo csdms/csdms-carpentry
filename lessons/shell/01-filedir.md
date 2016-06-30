@@ -441,7 +441,7 @@ Run `pwd` and `ls -F` to ensure that we're in the directory we expect.
 > and forth between directories. The difference between `cd ..` and `cd -` is 
 > that the former brings you *up*, while the latter brings you *back*. 
 
-### Nelle's Pipeline: Organizing Files
+## Nelle's Pipeline: Organizing Files
 
 Knowing just this much about files and directories,
 Nelle is ready to organize the files that the protein assay machine will create.

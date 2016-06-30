@@ -26,7 +26,10 @@ These lessons will start you on a path towards using these resources effectively
 
 > ## Getting ready {.getready}
 >
-> You need to download some files to follow this lesson:
+> You need to have a Unix terminal installed on your computer. For instructions on how to
+> install this software, visit [the CSDMS workshop page](http://mperignon.github.io/2016-05-16-csdms).
+>
+> You also need to download some files to follow this lesson:
 > 
 > 1. Download [shell-novice-data.zip](./shell-novice-data.zip) and move the file to your Desktop.
 > 1. Unzip/extract the file (ask your instructor if you need help with this step). You should end up with a new folder called **data-shell** on your Desktop.

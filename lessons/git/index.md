@@ -51,7 +51,8 @@ to be shared can and should be stored in a version control system.
 
 > ## Getting ready {.getready}
 >
-> Nothing to do: you're ready to go!
+> You need to have Git installed on your computer. For instructions on how to
+> install this software, visit [the CSDMS workshop page](http://mperignon.github.io/2016-05-16-csdms).
 
 ## Topics
 
