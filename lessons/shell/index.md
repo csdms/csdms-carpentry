@@ -33,8 +33,8 @@ These lessons will start you on a path towards using these resources effectively
 > 
 > 1. Download [shell-novice-data.zip](./shell-novice-data.zip) and move the file to your Desktop.
 > 1. Unzip/extract the file (ask your instructor if you need help with this step). You should end up with a new folder called **data-shell** on your Desktop.
-> 1. Download [pbs-examples.zip](./pbs-examples.zip) and move the file to your Desktop.
-> 1. Unzip/extract the file. You should end up with a new folder called **code-shell** on your Desktop.
+<!-- > 1. Download [pbs-examples.zip](./pbs-examples.zip) and move the file to your Desktop. -->
+<!-- > 1. Unzip/extract the file. You should end up with a new folder called **code-shell** on your Desktop. -->
 > 1. Open a terminal and type:
 >
 > ~~~ {.input}
@@ -53,7 +53,7 @@ These lessons will start you on a path towards using these resources effectively
 5.  [Loops](04-loop.html)
 6.  [Shell Scripts](05-script.html)
 7.  [Finding Things](06-find.html)
-8.  [Cluster Computing and PBS Commands](07-cluster-and-pbs.html)
+<!-- 8.  [Cluster Computing and PBS Commands](07-cluster-and-pbs.html) -->
 
 ## Other Resources
 
