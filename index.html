@@ -339,54 +339,63 @@ eventbrite:       # optional (insert the alphanumeric key for Eventbrite registr
   <div class="row">
     <div class="col-md-4">
       <h4 id="shell-windows">Windows</h4>
-      <ol>
-        <li>Download the Git for Windows <a href="https://git-for-windows.github.io/">installer</a>.</li>
-        <li>Run the installer and follow the steps bellow:
-          <ol>
-            <!-- Git 2.6.1 Setup -->
-            <!-- Welcome to the Git Setup Wizard -->
-            <li>Click on "Next".</li>
-            <!-- Information -->
-            <li>Click on "Next".</li>
-            <!-- Select Destination Location -->
-            <li>Click on "Next".</li>
-            <!-- Select Components -->
-            <li>Click on "Next".</li>
-            <!-- Select Start Menu Folder -->
-            <li>Click on "Next".</li>
-            <!-- Adjusting your PATH environment -->
-            <li>
-              <strong>
-                Select "Use Git from the Windows Command Prompt" and click on "Next".
-              </strong>
-                If you forgot to do this programs that you need for the workshop will not work properly.
-                If this happens rerun the installer and select the appropriate option.
-            </li>
-            <!-- Configuring the line ending conversions -->
-            <li>
-              Click on "Next".
-              <strong>
-                Keep "Checkout Windows-style, commit Unix-style line endings" selected.
-              </strong>
-            </li>
-            <!-- Configuring the terminal emulator to use with Git Bash -->
-            <li>
-              <strong>
-                Select "Use Windows' default console window" and click on "Next".
-              </strong>
-            </li>
-            <!-- Configuring experimental performance tweaks -->
-            <li>Click on "Next".</li>
-            <!-- Installing -->
-            <!-- Completing the Git Setup Wizard -->
-            <li>Click on "Finish".</li>
-          </ol>
-        </li>
-      </ol>
+<ol>
+      <li>Download the Git for Windows <a href="https://git-for-windows.github.io/">installer</a>.</li>
+      <li>Run the installer and follow the steps below:
+        <ol>
+          {% comment %} Git 2.18.0 Setup {% endcomment %}
+          <li>
+            Click on "Next" four times (two times if you've previously
+            installed Git).  You don't need to change anything
+            in the Information, location, components, and start menu screens.
+          </li>
+          <li>
+            <strong>
+              Select "Use the nano editor by default" and click on "Next".
+            </strong>
+          </li>
+          {% comment %} Adjusting your PATH environment {% endcomment %}
+          <li>
+            Keep "Use Git from the Windows Command Prompt" selected and click on "Next".
+            If you forgot to do this programs that you need for the workshop will not work properly.
+            If this happens rerun the installer and select the appropriate option.
+          </li>
+          {% comment %} Choosing the SSH executable {% endcomment %}
+          <li>Click on "Next".</li>
+          {% comment %} Configuring the line ending conversions {% endcomment %}
+          <li>
+            Keep "Checkout Windows-style, commit Unix-style line endings" selected and click on "Next".
+          </li>
+          {% comment %} Configuring the terminal emulator to use with Git Bash {% endcomment %}
+          <li>
+            <strong>
+              Select "Use Windows' default console window" and click on "Next".
+            </strong>
+          </li>
+          {% comment %} Configuring experimental performance tweaks {% endcomment %}
+          <li>Click on "Install".</li>
+          {% comment %} Installing {% endcomment %}
+          {% comment %} Completing the Git Setup Wizard {% endcomment %}
+          <li>Click on "Finish".</li>
+        </ol>
+      </li>
+      <li>
+        If your "HOME" environment variable is not set (or you don't know what this is):
+        <ol>
+          <li>Open command prompt (Open Start Menu then type <code>cmd</code> and press [Enter])</li>
+          <li>
+            Type the following line into the command prompt window exactly as shown:
+            <p><code>setx HOME "%USERPROFILE%"</code></p>
+          </li>
+          <li>Press [Enter], you should see <code>SUCCESS: Specified value was saved.</code></li>
+          <li>Quit command prompt by typing <code>exit</code> then pressing [Enter]</li>
+        </ol>
+      </li>
+    </ol>
       <p>This will provide you with both Git and Bash in the Git Bash program.</p>
     </div>
     <div class="col-md-4">
-      <h4 id="shell-macosx">Mac OS X</h4>
+      <h4 id="shell-macosx">macOS</h4>
       <p>
         The default shell in all versions of Mac OS X is Bash, so no
         need to install anything.  You access Bash from the Terminal
@@ -430,7 +439,7 @@ eventbrite:       # optional (insert the alphanumeric key for Eventbrite registr
       </p>
     </div>
     <div class="col-md-4">
-      <h4 id="git-macosx">Mac OS X</h4>
+      <h4 id="git-macosx">macOS</h4>
       <p>
         <strong>For OS X 10.9 and higher</strong>, install Git for Mac
         by downloading and running the most recent "mavericks" installer from
@@ -533,7 +542,7 @@ eventbrite:       # optional (insert the alphanumeric key for Eventbrite registr
     </p>
 
     <p>
-      We will teach Python using the IPython notebook, a programming environment
+      We will teach Python using the Jupyter Notebook, a programming environment
       that runs in a web browser. For this to work you will need a reasonably
       up-to-date browser. The current versions of the Chrome, Safari and
       Firefox browsers are all <a
